@@ -1,6 +1,6 @@
 ---
-title: "O Canivete Suíço da Visualização de Dados"
-subtitle: "GGPlot2, Plotly, Esquisse, Trelliscopejs, DT, GGanimate"
+title: "R aplicado a empreedendorismo"
+subtitle: "Usando o R para explorar bases de empreendedorismo"
 author: "Daniel Pagotto"
 contact: "danielppagotto@gmail.com"
 institute: "LAPEI/UFG e CIGETS/UFG"
@@ -11,47 +11,54 @@ output:
 ---
 ```{r set diretorio, message=FALSE, warning=FALSE, include=FALSE}
 library(DT)
- setwd("C:/Users/danie/OneDrive/Documents/DS Projects/Cursos de DS/curso r ladies - datavis")
+ setwd("~/GitHub/R_empreendedorismo1")
 ```
 
 # About me! 
 
-- Bacharel em Administração (UnB), Mestre em Administração (UFG)
+- Bacharel em Administração (UnB), Mestre em Administração (UFG), doutorando em Administração (UnB)
 - Já desenvolveu projetos em áreas, como: empreendedorismo, gestão/políticas públicas, inovação na saúde
 - Espalha a palavra do R há um ano e alguns meses
 - No ócio criativo está jogando algo, assistindo vídeos de culinária ou brincando com as gatas! 
 
 ```{r gatas, figures-side, fig.show="hold", echo=FALSE, out.height="40%", out.width="30%", fig.align='center', fig.height=3, fig.cap=" "}
 
-knitr::include_graphics("pira.jpeg")
+knitr::include_graphics("imagem/pira.jpeg")
 
-knitr::include_graphics("gigi.jpeg")
+knitr::include_graphics("imagem/gigi.jpeg")
 ```
 ---
 class: inverse, middle, left
-# Objetivos
-- Nivelar conhecimentos sobre **GGPlot2**
-- Construir gráficos com **Esquisse**
-- Transformar gráficos interativos com o **Plotly**  
-- Criar múltiplos painéis com **Trelliscopejs**  
-- Gerar animações com o **GGAnimate** 
+# Objetivos da aula 1
+- Introduzir conceitos básicos sobre 
+- Introduzir funções sobre manipulação de dados
+- Introduzir funções sobre visualização de dados  
 
 ```{r gif_data, echo=FALSE, out.height="30%", out.width="50%",fig.align='center'}
 knitr::include_graphics("https://media.giphy.com/media/xT5LMUt1dWrBQtacJG/giphy.gif")
 library(gapminder)
 ```
+---
+class: inverse, middle, center
+
+# Introduzindo funções para visualização de dados
 
 ---
+# Dica de leitura 
+
+
+
+
+
+---
+
 # Preparando nosso ambiente
 
 Antes de começar, vamos chamar alguns pacotes e preparar uma base que usaremos! Caso não tenha algum dos pacotes abaixo ainda, terá que baixar usando o comando **install.packages("nome do pacote")**.
 
 ```{r inicializar, echo=TRUE, message=FALSE, warning=FALSE}
-library(tidyverse) 
-library(trelliscopejs)
+library(ggplot2)
 library(gapminder)
-library(esquisse)
-library(plotly)
 
 base <- gapminder %>% 
   filter(year == 2007) ## filtrei para manter os dados de 2007
@@ -69,18 +76,60 @@ glimpse(base)
 knitr::include_graphics("ODS.png")
 
 ```
----
-class: inverse, middle, center
 
-# Nivelando os conhecimentos em GGPlot2
+---
+# GGPlot2 - a base de tudo
+O R por si só possui funções para gerar gráficos, porém o ggplot2 é um pacote que fornece um conjunto bem extenso de possibilidades 
+
+```{r histograma, echo=TRUE, message=FALSE, warning=FALSE,fig.align='center', fig.height=6, fig.width=6}
+
+hist(base$lifeExp)
+
+```
 
 ---
 # GGPlot2 - a base de tudo
 Vamos criar um histograma sobre a variável expectativa de vida. 
 
 ```{r histograma, echo=TRUE, message=FALSE, warning=FALSE,fig.align='center', fig.height=6, fig.width=6}
-ggplot(base,aes(x=lifeExp)) + geom_histogram()
+
+ggplot(base, aes(x = lifeExp)) + geom_histogram()
+
 ```
+---
+# GGPlot2 - a base de tudo
+Vamos criar um gráfico de densidade sobre a variável expectativa de vida. Veja outra forma de usar a função ggplot. 
+
+```{r histograma, echo=TRUE, message=FALSE, warning=FALSE,fig.align='center', fig.height=6, fig.width=6}
+
+base %>% 
+  ggplot(aes(y = lifeExp)) + geom_density()
+
+```
+---
+
+# GGPlot2 - a base de tudo
+Vamos criar um boxplot sobre a variável expectativa de vida. 
+
+```{r histograma, echo=TRUE, message=FALSE, warning=FALSE,fig.align='center', fig.height=6, fig.width=6}
+
+base %>% 
+  ggplot(aes(y = lifeExp)) + geom_boxplot()
+
+```
+
+---
+
+# GGPlot2 - a base de tudo
+Vamos criar um boxplot sobre a variável expectativa de vida. 
+
+```{r histograma, echo=TRUE, message=FALSE, warning=FALSE,fig.align='center', fig.height=6, fig.width=6}
+
+base %>% 
+  ggplot(aes(x = continent, y = lifeExp)) + geom_boxplot()
+
+```
+
 ---
 # Massa, Daniel! 
 E o que mais dá para customizar? 
