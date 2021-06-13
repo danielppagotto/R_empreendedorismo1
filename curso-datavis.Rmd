@@ -1,0 +1,381 @@
+---
+title: "O Canivete Suíço da Visualização de Dados"
+subtitle: "GGPlot2, Plotly, Esquisse, Trelliscopejs, DT, GGanimate"
+author: "Daniel Pagotto"
+contact: "danielppagotto@gmail.com"
+institute: "LAPEI/UFG e CIGETS/UFG"
+output:
+  xaringan::moon_reader:
+    css: [default,metropolis,metropolis-fonts]
+
+---
+```{r set diretorio, message=FALSE, warning=FALSE, include=FALSE}
+library(DT)
+ setwd("C:/Users/danie/OneDrive/Documents/DS Projects/Cursos de DS/curso r ladies - datavis")
+```
+
+# About me! 
+
+- Bacharel em Administração (UnB), Mestre em Administração (UFG)
+- Já desenvolveu projetos em áreas, como: empreendedorismo, gestão/políticas públicas, inovação na saúde
+- Espalha a palavra do R há um ano e alguns meses
+- No ócio criativo está jogando algo, assistindo vídeos de culinária ou brincando com as gatas! 
+
+```{r gatas, figures-side, fig.show="hold", echo=FALSE, out.height="40%", out.width="30%", fig.align='center', fig.height=3, fig.cap=" "}
+
+knitr::include_graphics("pira.jpeg")
+
+knitr::include_graphics("gigi.jpeg")
+```
+---
+class: inverse, middle, left
+# Objetivos
+- Nivelar conhecimentos sobre **GGPlot2**
+- Construir gráficos com **Esquisse**
+- Transformar gráficos interativos com o **Plotly**  
+- Criar múltiplos painéis com **Trelliscopejs**  
+- Gerar animações com o **GGAnimate** 
+
+```{r gif_data, echo=FALSE, out.height="30%", out.width="50%",fig.align='center'}
+knitr::include_graphics("https://media.giphy.com/media/xT5LMUt1dWrBQtacJG/giphy.gif")
+library(gapminder)
+```
+
+---
+# Preparando nosso ambiente
+
+Antes de começar, vamos chamar alguns pacotes e preparar uma base que usaremos! Caso não tenha algum dos pacotes abaixo ainda, terá que baixar usando o comando **install.packages("nome do pacote")**.
+
+```{r inicializar, echo=TRUE, message=FALSE, warning=FALSE}
+library(tidyverse) 
+library(trelliscopejs)
+library(gapminder)
+library(esquisse)
+library(plotly)
+
+base <- gapminder %>% 
+  filter(year == 2007) ## filtrei para manter os dados de 2007
+
+glimpse(base)
+
+```
+
+---
+# Curiosidade! ;)
+
+**FYI:** Gapminder é uma organização sem fins lucrativos que promove o desenvolvimento e atingimento dos ODS ao difundir a compreensão de informações de ordem social, econômica, ambiental a nível local, nacional e global. 
+
+```{r ods, echo=FALSE, fig.align='center'}
+knitr::include_graphics("ODS.png")
+
+```
+---
+class: inverse, middle, center
+
+# Nivelando os conhecimentos em GGPlot2
+
+---
+# GGPlot2 - a base de tudo
+Vamos criar um histograma sobre a variável expectativa de vida. 
+
+```{r histograma, echo=TRUE, message=FALSE, warning=FALSE,fig.align='center', fig.height=6, fig.width=6}
+ggplot(base,aes(x=lifeExp)) + geom_histogram()
+```
+---
+# Massa, Daniel! 
+E o que mais dá para customizar? 
+
+```{r densidade customizada, echo=TRUE, fig.align='center', fig.height=5.5, fig.width=5.5, message=FALSE, warning=FALSE}
+
+ggplot(base,aes(x=lifeExp)) + geom_histogram(fill="darkblue") +
+labs(title = "Histograma da expectativa de vida", 
+     x = "Expectativa de vida", y = "Frequência") + theme_bw()
+```
+
+---
+# PIB per capta e expectativa de vida 
+Vamos trabalhar com duas variáveis agora... 
+```{r scatter, echo=TRUE, fig.align='center', fig.height=5.5, fig.width=5.5, message=FALSE, warning=FALSE}
+
+ggplot(base,aes(x=log(gdpPercap),y=lifeExp)) + geom_point() +
+labs(x = "PIB per capita (log)", y = "Expectativa de vida") + theme_bw()
+```
+
+---
+# Mais uma camada...
+
+```{r scatter2, echo=TRUE, fig.align='center', fig.height=5.5, fig.width=5.5, message=FALSE, warning=FALSE}
+
+ggplot(base,aes(y=lifeExp, x=log(gdpPercap))) + geom_point() +
+  geom_smooth(method = "lm", se=FALSE) + 
+  labs(x = "PIB per capita (log)",
+       y = "Expectativa de vida") + theme_bw()
+```
+
+---
+# Argumento col 
+
+```{r scatter3, echo=TRUE, fig.align='center', fig.height=5.5, fig.width=5.5, message=FALSE, warning=FALSE}
+
+ggplot(base,aes(y=lifeExp, x=log(gdpPercap), col=continent)) + geom_point() +
+  geom_smooth(method = "lm", se=FALSE) + 
+  labs(x = "PIB per capita (log)",
+       y = "Expectativa de vida") + theme_bw()
+```
+
+---
+# Argumento size
+
+```{r scatter4, echo=TRUE, fig.align='center', fig.height=5.5, fig.width=5.5, message=FALSE, warning=FALSE}
+
+ggplot(base,aes(y=lifeExp, x=log(gdpPercap), col=continent,size = pop)) + geom_point() +
+  geom_smooth(method = "lm", se=FALSE) + 
+  labs(x = "PIB per capta (log)",
+       y = "Expectativa de vida") + theme_bw()
+```
+
+---
+# Facet 
+
+```{r scatter5, echo=TRUE, fig.align='center', fig.height=5.5, fig.width=8, message=FALSE, warning=FALSE}
+
+ggplot(base,aes(x=log(gdpPercap), y=lifeExp, col=continent,
+size = pop)) + geom_point() + geom_smooth(method = "lm", se=FALSE) + 
+  labs(x = "PIB per capita (log)", y = "Expectativa de vida") + theme_bw() + 
+  facet_grid(~continent)
+```
+---
+# Tabela interativa (Bônus!)
+Conhecimentos nerds extras. Clique [aqui](https://rstudio.github.io/DT/) para conhecer mais do pacote DT. 
+
+```{r datatable, fig.height=5, fig.width=5}
+DT::datatable(base, options = list(pageLength = 5), class = 'cell-border stripe')
+```
+---
+# Tarefa de casa
+
+1) Crie um boxplot para a variável expectativa de vida
+
+2) Crie um boxplot para a variável expectativa de vida e cada  continentes em um mesmo painel
+
+3) Faça o mesmo que a questão 2, mas dessa vez use facet
+
+4) Insira título nos gráficos, mude o nome dos eixos e coloque outro tema
+
+
+```{r gif_data2, echo=FALSE, out.height="10%", out.width="20%",fig.align='center'}
+knitr::include_graphics("https://media.giphy.com/media/ptPx1nVWOG32E/giphy.gif")
+```
+
+---
+class: inverse, middle, center
+
+# Criando gráficos com o Esquisse
+
+---
+
+# Esquisse 
+
+esquisser(viewer = "browser")
+
+
+```{r imagem_esquisse, figures-side, fig.show="hold", echo=FALSE, out.height="70%", out.width="90%", fig.align='center', fig.height=3, fig.cap=" "}
+
+knitr::include_graphics("esquisse.png")
+
+```
+
+---
+class: inverse, middle, center
+
+# Plotly
+
+---
+# Gerando gráficos interativos 
+
+```{r plotly, echo=TRUE, fig.height=6.5, fig.width=6.5, message=FALSE, warning=FALSE, fig.align='center'}
+
+plot_ly(base, x=~log(gdpPercap), y=~lifeExp,
+        color = ~continent, size = ~pop, type = "scatter")
+
+
+```
+---
+# O Plotly tem suporte ao GGPlot2
+
+Vamos resgatar um gráfico que fizemos lá atrás, no slide 11. 
+
+```{r plotly2, echo=TRUE, message=FALSE, fig.height=4, fig.width=5.5, warning=FALSE, fig.align='center'}
+grafico <- ggplot(base,aes(y=lifeExp, x=log(gdpPercap), col=continent)) + geom_point() +
+  labs(x = "PIB per capita (log)",
+       y = "Expectativa de vida") + theme_bw()
+
+ggplotly(grafico)
+
+```
+---
+class: inverse, middle, center
+
+# TrelliscopeJS
+
+---
+# Antes de começar...
+
+Vamos dar uma olhadinha na base que vamos trabalhar agora, que é oriunda do SINASC do DATASUS(MS). 
+
+```{r sinasc, echo=TRUE, message=FALSE, warning=FALSE}
+sinasc_go <- read.csv("sinasc_go.csv")
+glimpse(sinasc_go)
+
+```
+
+Tais dados foram acessados via pacote [microdatasus](https://github.com/rfsaldanha/microdatasus/wiki). Vale muito a pena dar uma olhadinha nele! 
+
+---
+# Momento cultura goiana
+
+```{r mapa goias, echo=FALSE, message=FALSE, warning=FALSE}
+  knitr::include_graphics("imagem_goias.png")
+
+```
+
+---
+
+# Vamos ver a evolução dos nascimentos
+
+```{r mesorregioes, fig.align='center', fig.height=6, fig.width=7.5, message=FALSE, warning=FALSE, echo=TRUE}
+sinasc_go %>% 
+  group_by(mes,mesoregiao) %>% 
+  count() %>% 
+  ggplot(aes(mes,n))+geom_line()+scale_x_continuous(breaks = seq(2,12,2))+facet_wrap(~mesoregiao,scales = "free_y")
+ 
+
+```
+
+---
+
+# Facet para todas cidades 
+
+```{r cidades, echo=TRUE, eval= FALSE, fig.align='center', fig.height=6, fig.width=7.5, message=FALSE, warning=FALSE}
+sinasc_go %>% 
+  group_by(mes,municipio) %>% 
+  count() %>% 
+  ggplot(aes(mes,n))+geom_line()+scale_x_continuous(breaks = seq(2,12,2))+
+  facet_trelliscope(~municipio,scales = "free_y")
+ 
+
+```
+
+Podemos aliar o Trelliscope ao Plotly usando um simples argumento "as_plotly = TRUE"
+
+```{r cidades2, eval = FALSE, echo=TRUE, fig.align='center', fig.height=6, fig.width=7.5, message=FALSE, warning=FALSE}
+sinasc_go %>% 
+  group_by(mes,municipio) %>% 
+  count() %>% 
+  ggplot(aes(mes,n))+geom_line()+
+  facet_trelliscope(~municipio,scales = "free_y", as_plotly = TRUE)
+ 
+```
+
+---
+class: inverse, middle, center
+
+# GGAnimate
+
+---
+
+# Trabalhando com animações
+Primeiro, vamos criar um gráfico estático da evolução dos nascimentos em Goiânia.
+
+
+```{r nasc_gyn1, echo=TRUE, fig.height=5, fig.width=5, message=FALSE, warning=FALSE, fig.align='center'}
+sinasc_gyn <- read.csv("sinasc_goiania.csv")
+ggplot(sinasc_gyn,aes(x=ano,y=n))+
+  geom_line(size=2,col="darkblue") +
+  geom_label(aes(label=n),size=4) + theme_bw() + labs(y = "nº de nascimentos", 
+                  title = "Número de nascimentos em Goiânia entre 2009 e 2018")
+
+```
+---
+# Vamos animar esse gráfico 
+
+```{r animar, echo=TRUE, fig.height=4, fig.width=4, message=FALSE, warning=FALSE}
+library(gganimate)
+library(gifski)
+
+grafico <- ggplot(sinasc_gyn,aes(x=ano,y=n))+
+  geom_line(size=2,col="darkblue") +  geom_label(aes(label=format(round(n))),size=4) + 
+  theme_bw() + 
+  labs(y = "nº de nascimentos",title = "Número de nascimentos em Goiânia entre 2009 e 2018")
+
+animar <- grafico + transition_reveal(ano)
+```
+---
+class: middle, center
+```{r gif_magic, echo=FALSE, out.height="30%", out.width="50%",fig.align='center', }
+knitr::include_graphics("https://media.giphy.com/media/l2YWs1NexTst9YmFG/giphy.gif")
+```
+
+---
+# E a mágina acontece! 
+
+```{r magica, echo=TRUE}
+animate(animar,fps = 6)
+```
+
+---
+# Vamos animar um gráfico de dispersão
+Primeiro vamos criar o gráfico estático, igual fizemos antes. Dessa vez vamos usar o gapminder. 
+
+```{r scater, echo=TRUE, fig.height=5.5, fig.width=7, fig.align= 'center'}
+ggplot(gapminder, aes(x = log(gdpPercap), y=lifeExp, size = pop, col = continent)) +
+  geom_point() +  labs(x = "PIB per capita", y = "Expectativa de vida") + theme_bw()
+```
+
+---
+# Processo de animação
+
+```{r}
+grafico2 <- ggplot(gapminder, aes(x = log(gdpPercap), y=lifeExp, size = pop, col = continent)) +
+  geom_point() +  labs(x = "PIB per capita", y = "Expectativa de vida") + theme_bw()
+
+
+animar_gapminder <- grafico2 + transition_time(year) +
+  labs(title = "Ano: {frame_time}")
+
+```
+---
+# Done! 
+
+```{r}
+animate(animar_gapminder,fps = 6)
+```
+
+---
+# Aplicando um facet 
+
+```{r fig.align='center'}
+grafico2 + facet_wrap(~continent) + transition_time(year) + labs(title = "Ano: {frame_time}")
+```
+---
+# Para aprender mais
+
+- [GGPlot2 cheat sheet](https://rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf)
+- [GGPlot2 - LAPEI](https://www.youtube.com/watch?v=IPyjHKe30eo)
+- [Plotly](https://plotly.com/)
+- [Blog Datanovia](https://www.datanovia.com/en/blog/gganimate-how-to-create-plots-with-beautiful-animation-in-r/)
+
+Apresentação feita com Rmarkdown, usando pacote xaringã
+
+```{r gif_aprofundar, echo=FALSE, fig.align='center', warning=FALSE, out.height="40%", out.width="70%"}
+knitr::include_graphics("https://media.giphy.com/media/13HBDT4QSTpveU/giphy.gif")
+```
+
+---
+class: inverse, middle, center
+
+# Obrigado
+
+**Daniel Pagotto** | danielppagotto@gmail.com | [LinkedIn](https://www.linkedin.com/in/daniel-do-prado-pagotto-bab62a50/)
+
+
