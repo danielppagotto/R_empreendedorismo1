@@ -46,9 +46,11 @@ class: inverse, middle, center
 ---
 # Dica de leitura 
 
+```{r livro, figures-side, fig.show="hold", echo=FALSE, out.height="40%", out.width="30%", fig.align='center', fig.height=3, fig.cap=" "}
 
+knitr::include_graphics("imagem/storytelling.jpg")
 
-
+```
 
 ---
 
@@ -58,10 +60,11 @@ Antes de começar, vamos chamar alguns pacotes e preparar uma base que usaremos!
 
 ```{r inicializar, echo=TRUE, message=FALSE, warning=FALSE}
 library(ggplot2)
+library(dplyr)
 library(gapminder)
 
 base <- gapminder %>% 
-  filter(year == 2007) ## filtrei para manter os dados de 2007
+  filter(year == 2007) 
 
 glimpse(base)
 
@@ -73,7 +76,7 @@ glimpse(base)
 **FYI:** Gapminder é uma organização sem fins lucrativos que promove o desenvolvimento e atingimento dos ODS ao difundir a compreensão de informações de ordem social, econômica, ambiental a nível local, nacional e global. 
 
 ```{r ods, echo=FALSE, fig.align='center'}
-knitr::include_graphics("ODS.png")
+knitr::include_graphics("imagem/ODS.png")
 
 ```
 
@@ -81,7 +84,7 @@ knitr::include_graphics("ODS.png")
 # GGPlot2 - a base de tudo
 O R por si só possui funções para gerar gráficos, porém o ggplot2 é um pacote que fornece um conjunto bem extenso de possibilidades 
 
-```{r histograma, echo=TRUE, message=FALSE, warning=FALSE,fig.align='center', fig.height=6, fig.width=6}
+```{r histograma1, echo=TRUE, message=FALSE, warning=FALSE,fig.align='center', fig.height=6, fig.width=6}
 
 hist(base$lifeExp)
 
@@ -91,7 +94,7 @@ hist(base$lifeExp)
 # GGPlot2 - a base de tudo
 Vamos criar um histograma sobre a variável expectativa de vida. 
 
-```{r histograma, echo=TRUE, message=FALSE, warning=FALSE,fig.align='center', fig.height=6, fig.width=6}
+```{r histograma2, echo=TRUE, message=FALSE, warning=FALSE,fig.align='center', fig.height=6, fig.width=6}
 
 ggplot(base, aes(x = lifeExp)) + geom_histogram()
 
@@ -100,10 +103,10 @@ ggplot(base, aes(x = lifeExp)) + geom_histogram()
 # GGPlot2 - a base de tudo
 Vamos criar um gráfico de densidade sobre a variável expectativa de vida. Veja outra forma de usar a função ggplot. 
 
-```{r histograma, echo=TRUE, message=FALSE, warning=FALSE,fig.align='center', fig.height=6, fig.width=6}
+```{r densidade, echo=TRUE, message=FALSE, warning=FALSE,fig.align='center', fig.height=6, fig.width=6}
 
 base %>% 
-  ggplot(aes(y = lifeExp)) + geom_density()
+  ggplot(aes(x = lifeExp)) + geom_density()
 
 ```
 ---
@@ -111,7 +114,7 @@ base %>%
 # GGPlot2 - a base de tudo
 Vamos criar um boxplot sobre a variável expectativa de vida. 
 
-```{r histograma, echo=TRUE, message=FALSE, warning=FALSE,fig.align='center', fig.height=6, fig.width=6}
+```{r boxplot1, echo=TRUE, message=FALSE, warning=FALSE,fig.align='center', fig.height=6, fig.width=6}
 
 base %>% 
   ggplot(aes(y = lifeExp)) + geom_boxplot()
@@ -123,7 +126,7 @@ base %>%
 # GGPlot2 - a base de tudo
 Vamos criar um boxplot sobre a variável expectativa de vida. 
 
-```{r histograma, echo=TRUE, message=FALSE, warning=FALSE,fig.align='center', fig.height=6, fig.width=6}
+```{r boxplot2, echo=TRUE, message=FALSE, warning=FALSE,fig.align='center', fig.height=6, fig.width=6}
 
 base %>% 
   ggplot(aes(x = continent, y = lifeExp)) + geom_boxplot()
@@ -230,7 +233,7 @@ esquisser(viewer = "browser")
 
 ```{r imagem_esquisse, figures-side, fig.show="hold", echo=FALSE, out.height="70%", out.width="90%", fig.align='center', fig.height=3, fig.cap=" "}
 
-knitr::include_graphics("esquisse.png")
+knitr::include_graphics("imagem/esquisse.png")
 
 ```
 
@@ -242,19 +245,11 @@ class: inverse, middle, center
 ---
 # Gerando gráficos interativos 
 
-```{r plotly, echo=TRUE, fig.height=6.5, fig.width=6.5, message=FALSE, warning=FALSE, fig.align='center'}
-
-plot_ly(base, x=~log(gdpPercap), y=~lifeExp,
-        color = ~continent, size = ~pop, type = "scatter")
-
-
-```
----
-# O Plotly tem suporte ao GGPlot2
-
-Vamos resgatar um gráfico que fizemos lá atrás, no slide 11. 
+Vamos resgatar um gráfico que fizemos lá atrás 
 
 ```{r plotly2, echo=TRUE, message=FALSE, fig.height=4, fig.width=5.5, warning=FALSE, fig.align='center'}
+library(plotly)
+
 grafico <- ggplot(base,aes(y=lifeExp, x=log(gdpPercap), col=continent)) + geom_point() +
   labs(x = "PIB per capita (log)",
        y = "Expectativa de vida") + theme_bw()
@@ -262,151 +257,9 @@ grafico <- ggplot(base,aes(y=lifeExp, x=log(gdpPercap), col=continent)) + geom_p
 ggplotly(grafico)
 
 ```
----
-class: inverse, middle, center
-
-# TrelliscopeJS
-
----
-# Antes de começar...
-
-Vamos dar uma olhadinha na base que vamos trabalhar agora, que é oriunda do SINASC do DATASUS(MS). 
-
-```{r sinasc, echo=TRUE, message=FALSE, warning=FALSE}
-sinasc_go <- read.csv("sinasc_go.csv")
-glimpse(sinasc_go)
-
-```
-
-Tais dados foram acessados via pacote [microdatasus](https://github.com/rfsaldanha/microdatasus/wiki). Vale muito a pena dar uma olhadinha nele! 
-
----
-# Momento cultura goiana
-
-```{r mapa goias, echo=FALSE, message=FALSE, warning=FALSE}
-  knitr::include_graphics("imagem_goias.png")
-
-```
 
 ---
 
-# Vamos ver a evolução dos nascimentos
-
-```{r mesorregioes, fig.align='center', fig.height=6, fig.width=7.5, message=FALSE, warning=FALSE, echo=TRUE}
-sinasc_go %>% 
-  group_by(mes,mesoregiao) %>% 
-  count() %>% 
-  ggplot(aes(mes,n))+geom_line()+scale_x_continuous(breaks = seq(2,12,2))+facet_wrap(~mesoregiao,scales = "free_y")
- 
-
-```
-
----
-
-# Facet para todas cidades 
-
-```{r cidades, echo=TRUE, eval= FALSE, fig.align='center', fig.height=6, fig.width=7.5, message=FALSE, warning=FALSE}
-sinasc_go %>% 
-  group_by(mes,municipio) %>% 
-  count() %>% 
-  ggplot(aes(mes,n))+geom_line()+scale_x_continuous(breaks = seq(2,12,2))+
-  facet_trelliscope(~municipio,scales = "free_y")
- 
-
-```
-
-Podemos aliar o Trelliscope ao Plotly usando um simples argumento "as_plotly = TRUE"
-
-```{r cidades2, eval = FALSE, echo=TRUE, fig.align='center', fig.height=6, fig.width=7.5, message=FALSE, warning=FALSE}
-sinasc_go %>% 
-  group_by(mes,municipio) %>% 
-  count() %>% 
-  ggplot(aes(mes,n))+geom_line()+
-  facet_trelliscope(~municipio,scales = "free_y", as_plotly = TRUE)
- 
-```
-
----
-class: inverse, middle, center
-
-# GGAnimate
-
----
-
-# Trabalhando com animações
-Primeiro, vamos criar um gráfico estático da evolução dos nascimentos em Goiânia.
-
-
-```{r nasc_gyn1, echo=TRUE, fig.height=5, fig.width=5, message=FALSE, warning=FALSE, fig.align='center'}
-sinasc_gyn <- read.csv("sinasc_goiania.csv")
-ggplot(sinasc_gyn,aes(x=ano,y=n))+
-  geom_line(size=2,col="darkblue") +
-  geom_label(aes(label=n),size=4) + theme_bw() + labs(y = "nº de nascimentos", 
-                  title = "Número de nascimentos em Goiânia entre 2009 e 2018")
-
-```
----
-# Vamos animar esse gráfico 
-
-```{r animar, echo=TRUE, fig.height=4, fig.width=4, message=FALSE, warning=FALSE}
-library(gganimate)
-library(gifski)
-
-grafico <- ggplot(sinasc_gyn,aes(x=ano,y=n))+
-  geom_line(size=2,col="darkblue") +  geom_label(aes(label=format(round(n))),size=4) + 
-  theme_bw() + 
-  labs(y = "nº de nascimentos",title = "Número de nascimentos em Goiânia entre 2009 e 2018")
-
-animar <- grafico + transition_reveal(ano)
-```
----
-class: middle, center
-```{r gif_magic, echo=FALSE, out.height="30%", out.width="50%",fig.align='center', }
-knitr::include_graphics("https://media.giphy.com/media/l2YWs1NexTst9YmFG/giphy.gif")
-```
-
----
-# E a mágina acontece! 
-
-```{r magica, echo=TRUE}
-animate(animar,fps = 6)
-```
-
----
-# Vamos animar um gráfico de dispersão
-Primeiro vamos criar o gráfico estático, igual fizemos antes. Dessa vez vamos usar o gapminder. 
-
-```{r scater, echo=TRUE, fig.height=5.5, fig.width=7, fig.align= 'center'}
-ggplot(gapminder, aes(x = log(gdpPercap), y=lifeExp, size = pop, col = continent)) +
-  geom_point() +  labs(x = "PIB per capita", y = "Expectativa de vida") + theme_bw()
-```
-
----
-# Processo de animação
-
-```{r}
-grafico2 <- ggplot(gapminder, aes(x = log(gdpPercap), y=lifeExp, size = pop, col = continent)) +
-  geom_point() +  labs(x = "PIB per capita", y = "Expectativa de vida") + theme_bw()
-
-
-animar_gapminder <- grafico2 + transition_time(year) +
-  labs(title = "Ano: {frame_time}")
-
-```
----
-# Done! 
-
-```{r}
-animate(animar_gapminder,fps = 6)
-```
-
----
-# Aplicando um facet 
-
-```{r fig.align='center'}
-grafico2 + facet_wrap(~continent) + transition_time(year) + labs(title = "Ano: {frame_time}")
-```
----
 # Para aprender mais
 
 - [GGPlot2 cheat sheet](https://rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf)
