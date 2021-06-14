@@ -208,7 +208,7 @@ Matriz
 # Matriz
 Veja que tem uma carinha de tabela. Mas daqui para frente vamos trabalhar com outra estrutura chamada **dataframe**. Essa estrutura tem formato tabular e ainda permite que os objetos tenham tipos diferentes, ou seja, posso ter uma coluna numérica, outra no formato data, outra no formato de caracteres e assim por diante. 
 
-Existe um tipo de dados chamado **lista** muito importante também. Mas entrar nele é assunto para um curso de R intermediário.  
+Existe um tipo de estrutura de dados chamado **lista** muito importante também. Mas entrar nele é assunto para um curso de R intermediário.  
 
 ```{r matriz2}
 rownames(Matriz)<-c("Alice","Gilmar","Cecilia","Bianca","Valentina","Augusto")
