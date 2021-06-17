@@ -205,7 +205,7 @@ Matriz
 ```
 
 ---
-# Matriz
+# Matrizes
 Veja que tem uma carinha de tabela. Mas daqui para frente vamos trabalhar com outra estrutura chamada **dataframe**. Essa estrutura tem formato tabular e ainda permite que os objetos tenham tipos diferentes, ou seja, posso ter uma coluna numérica, outra no formato data, outra no formato de caracteres e assim por diante. 
 
 Existe um tipo de estrutura de dados chamado **lista** muito importante também. Mas entrar nele é assunto para um curso de R intermediário.  
@@ -221,6 +221,162 @@ class: inverse, middle, center
 # Introduzindo funções para manipulação de dados
 
 ---
+
+# Inspecionando o dataframe
+
+```{r inspecionando}
+library(gapminder)
+basePaises <- gapminder
+
+# inspecionando a estrutura da base
+str(basePaises)
+
+```
+
+---
+# Inspecionando elementos
+
+```{r inspecionando2}
+# inspecionando as 6 primeiras observações 
+head(basePaises)
+
+```
+
+---
+# Inspecionando elementos
+```{r inspecionando3}
+# inspecionando as 10 últimas observações
+tail(basePaises, n = 10)
+
+
+```
+
+---
+# Inspecionando elementos
+```{r inspecionando4}
+# estatísticas descritivas da base
+summary(basePaises)
+```
+---
+# Inspecionando elementos
+```{r inspecionando5}
+# Acessando uma variável da base
+basePaises$continent
+```
+
+---
+# Inspecionando elementos
+```{r inspecionando6, message=FALSE, warning=FALSE}
+# Acessando elementos únicos
+unique(basePaises$year)
+
+mean(basePaises$lifeExp)
+
+# Vamos instalar nosso primeiro pacote: dplyr
+
+library(dplyr)
+glimpse(basePaises)
+```
+
+---
+# Função filter 
+
+```{r filter, message=FALSE, warning=FALSE, paged.print=TRUE}
+basePaises %>% 
+  filter(continent == "Asia")
+
+```
+
+---
+# Função filter 
+
+```{r filter2, message=FALSE, warning=FALSE, paged.print=TRUE}
+
+basePaises%>%
+  filter(continent == "Americas" & year>1990)
+
+```
+---
+# Função filter 
+
+```{r filter3, message=FALSE, warning=FALSE, paged.print=TRUE}
+# != diferente 
+basePaises%>%
+  filter(continent != "Oceania")
+
+# O mais legal é que você pode armazenar essas consultas em novos objetos basta usar uma atribuição
+
+baseAsia <- basePaises%>%
+  filter(continent == "Asia")
+```
+
+---
+# Função select
+
+```{r select, message=FALSE, warning=FALSE}
+basePaises%>%
+  select(year,country,gdpPercap)
+
+```
+
+---
+# Função select
+
+```{r select2, message=FALSE, warning=FALSE}
+
+basePaises%>%
+  select(-lifeExp)
+```
+
+---
+# Função select + filter
+
+```{r select_filter}
+basePaises%>%
+  filter(continent == "Americas" & year>1990)%>%
+  select(year,country,gdpPercap)
+```
+
+---
+# Função mutate 
+
+Serve para criar uma nova variável 
+```{r mutate}
+basePaises <- basePaises %>%
+  mutate(GDP = gdpPercap * pop)
+
+basePorte <- basePaises%>%
+  filter(year == 1992) %>%
+  mutate(porte = if_else(pop>median(pop),"G","P"))
+
+```
+
+---
+
+# Funções group_by e summarize 
+
+```{r group_by}
+basePaises%>%
+  group_by(country)%>%
+  summarize(meanLE=mean(lifeExp),meanPop=mean(pop),meanGpc=mean(gdpPercap))
+
+baseContinentes <- basePaises %>%
+  group_by(continent,year)%>%
+  summarize(meanLE=mean(lifeExp),meanPop=mean(pop),meanGpc=mean(gdpPercap))
+```
+
+---
+# Funções group_by e summarize 
+
+```{r group_by, figures-side, fig.show="hold", echo=FALSE, out.height="90%", out.width="90%", fig.align='center', fig.height=3, fig.cap=" "}
+
+knitr::include_graphics("imagem/group_by.png")
+```
+
+Fonte: [Datasciencemadesimple](https://www.datasciencemadesimple.com/group-by-function-in-r-using-dplyr/)
+
+---
+
 class: inverse, middle, center
 
 # Introduzindo funções para visualização de dados
