@@ -429,7 +429,7 @@ Fonte: [Índice de Cidades empreendedoras](https://ice.enap.gov.br/)
 # Joins
 
 ```{r munic}
-munic <- read.csv("https://raw.githubusercontent.com/danielppagotto/R_empreendedorismo1/main/politicas_empreendedorismo.csv",sep = ";", encoding = "UTF-8")
+munic <- read.csv("https://raw.githubusercontent.com/danielppagotto/R_empreendedorismo1/main/arquivos%20de%20bases/politicas_empreendedorismo.csv",sep = ";", encoding = "UTF-8")
 ```
 
 
