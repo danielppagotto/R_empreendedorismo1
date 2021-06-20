@@ -14,42 +14,56 @@ library(DT)
  setwd("~/GitHub/R_empreendedorismo1")
 ```
 
+# Agradecimentos
+<br>
+<br>
+<br>
+```{r agradecimentos, figures-side, fig.show="hold", echo=FALSE, out.height="100%", out.width="100%", fig.align='center', fig.height=4, fig.cap=" "}
+
+knitr::include_graphics("imagem/agradecimentos.jpeg")
+
+```
+
+
+---
 # About me! 
 
 - Bacharel em Administração (UnB), Mestre em Administração (UFG), doutorando em Administração (UnB)
 - Já desenvolveu projetos em áreas, como: empreendedorismo, gestão/políticas públicas, inovação na saúde
-- Espalha a palavra do R há um ano e alguns meses
-- No ócio criativo está jogando algo, assistindo vídeos de culinária ou brincando com as gatas! 
+- Há aproximadamente dois anos tem utilizado R rotineiramente em suas atividades de trabalho e  ministrado cursos para a comunidade de R 
 
-```{r gatas, figures-side, fig.show="hold", echo=FALSE, out.height="40%", out.width="30%", fig.align='center', fig.height=3, fig.cap=" "}
+```{r gatas, figures-side, fig.show="hold", echo=FALSE, out.height="65%", out.width="75%", fig.align='center', fig.height=3, fig.cap=" "}
 
-knitr::include_graphics("imagem/pira.jpeg")
+knitr::include_graphics("imagem/logos-lape-cigets.png")
 
-knitr::include_graphics("imagem/gigi.jpeg")
 ```
 ---
 class: inverse, middle, left
 # Divisão do curso 
-- Módulo 1: conceitos básicos de R 
-- Módulo 2: usando o R para explorar o GEM
-- Módulo 3: usando o R para explorar o PSED  
-
-```{r gif_modulos, echo=FALSE, out.height="30%", out.width="50%",fig.align='center'}
-knitr::include_graphics("https://media.giphy.com/media/3R9LDINpbGX2o/giphy.gif")
-library(gapminder)
-```
+* **Módulo 1: conceitos básicos de R** 
+  + Cálculos básicos
+  + Tipos de variáveis e objetos
+  + O pacote dplyr para manipulação de dataframes
+  + O pacote ggplot2 para visualização de dados
+* **Módulo 2: usando o R para explorar o Global Entrepreneurship Monitor (GEM)**
+  + Compreendedo as bases 
+  + Tratando as bases 
+  + Análise Exploratória dos Dados do GEM
+* **Módulo 3: usando o R para explorar o Panel Study of Entrepreneurial Dynamics (PSED)**
+  + Compreendendo a base
+  + Tratando a base 
+  + Análise Exploratória dos Dados do PSED
 
 ---
 class: inverse, middle, left
 # Objetivos do módulo 1
-- Introduzir conceitos básicos sobre R
-- Introduzir funções sobre manipulação de dados
-- Introduzir funções sobre visualização de dados  
+- Demonstrar a relevância do uso do R 
+- Aplicar operações básicas 
+- Descrever tipos de objetos 
+- Descrever tipos de variáveis 
+- Aplicar funções para manipular dataframes 
+- Aplicar funções para visualização de dados
 
-```{r gif_modulo1, echo=FALSE, out.height="30%", out.width="50%",fig.align='center'}
-knitr::include_graphics("https://media.giphy.com/media/xT5LMUt1dWrBQtacJG/giphy.gif")
-
-```
 ---
 # Por que usar o R?
 
@@ -211,7 +225,7 @@ Veja que tem uma carinha de tabela. Mas daqui para frente vamos trabalhar com ou
 Existe um tipo de estrutura de dados chamado **lista** muito importante também. Mas entrar nele é assunto para um curso de R intermediário.  
 
 ```{r matriz2}
-rownames(Matriz)<-c("Alice","Gilmar","Cecilia","Bianca","Valentina","Augusto")
+rownames(Matriz) <- c("Alice","Gilmar","Cecilia","Bianca","Valentina","Augusto")
 Matriz
 ```
 
@@ -277,6 +291,14 @@ mean(basePaises$lifeExp)
 library(dplyr)
 glimpse(basePaises)
 ```
+---
+# Abrindo um parêntese 
+<br>
+<br> 
+```{r eleven, figures-side, fig.show="hold", echo=FALSE, out.height="100%", out.width="100%", fig.align='center', fig.height=3, fig.cap=" "}
+
+knitr::include_graphics("imagem/eleven.png")
+```
 
 ---
 # Função filter 
@@ -304,8 +326,7 @@ basePaises%>%
 basePaises%>%
   filter(continent != "Oceania")
 
-# O mais legal é que você pode armazenar essas consultas em novos objetos basta usar uma atribuição
-
+# Você pode armazenar sua consulta em outro objeto
 baseAsia <- basePaises%>%
   filter(continent == "Asia")
 ```
@@ -332,8 +353,8 @@ basePaises%>%
 # Função select + filter
 
 ```{r select_filter}
-basePaises%>%
-  filter(continent == "Americas" & year>1990)%>%
+basePaises %>%
+  filter(continent == "Americas" & year>1990) %>%
   select(year,country,gdpPercap)
 ```
 
@@ -345,9 +366,11 @@ Serve para criar uma nova variável
 basePaises <- basePaises %>%
   mutate(GDP = gdpPercap * pop)
 
-basePorte <- basePaises%>%
+basePorte <- basePaises %>%
   filter(year == 1992) %>%
   mutate(porte = if_else(pop>median(pop),"G","P"))
+
+head(basePorte)
 
 ```
 
@@ -356,24 +379,56 @@ basePorte <- basePaises%>%
 # Funções group_by e summarize 
 
 ```{r group_by}
-basePaises%>%
-  group_by(country)%>%
+basePaises %>%
+  group_by(country) %>%
   summarize(meanLE=mean(lifeExp),meanPop=mean(pop),meanGpc=mean(gdpPercap))
 
-baseContinentes <- basePaises %>%
-  group_by(continent,year)%>%
-  summarize(meanLE=mean(lifeExp),meanPop=mean(pop),meanGpc=mean(gdpPercap))
 ```
 
 ---
-# Funções group_by e summarize 
-
-```{r group_by, figures-side, fig.show="hold", echo=FALSE, out.height="90%", out.width="90%", fig.align='center', fig.height=3, fig.cap=" "}
+# Funções group_by e summarize
+<br>
+```{r group_by, figures-side, fig.show="hold", echo=FALSE, out.height="100%", out.width="100%", fig.align='center', fig.height=3, fig.cap=" "}
 
 knitr::include_graphics("imagem/group_by.png")
 ```
 
-Fonte: [Datasciencemadesimple](https://www.datasciencemadesimple.com/group-by-function-in-r-using-dplyr/)
+---
+
+# Funções group_by e summarize 
+
+```{r group_by2}
+
+basePaises %>%
+  group_by(continent,year) %>%
+  summarize(meanLE=mean(lifeExp),meanPop=mean(pop),meanGpc=mean(gdpPercap))
+```
+
+---
+# Funções top_n e arrange
+A função top_n serve para selecionar os n maiores valores que desejar 
+
+```{r top_n}
+basePaises %>% 
+  filter(year == 2007) %>% 
+  top_n(5,pop) %>% 
+  arrange(desc(pop))
+
+
+```
+---
+# Base ICE
+```{r ice, figures-side, fig.show="hold", echo=FALSE, out.height="100%", out.width="100%", fig.align='center', fig.height=3, fig.cap=" "}
+
+knitr::include_graphics("imagem/ice.png")
+```
+
+Fonte: [Índice de Cidades empreendedoras](https://ice.enap.gov.br/)
+
+---
+# Joins
+
+
 
 ---
 
@@ -384,7 +439,7 @@ class: inverse, middle, center
 ---
 # Dica de leitura 
 
-```{r livro, figures-side, fig.show="hold", echo=FALSE, out.height="50%", out.width="50%", fig.align='center', fig.height=3, fig.cap=" "}
+```{r livro, figures-side, fig.show="hold", echo=FALSE, out.height="30%", out.width="40%", fig.align='center', fig.height=3, fig.cap=" "}
 
 knitr::include_graphics("imagem/storytelling.jpg")
 
@@ -408,7 +463,19 @@ glimpse(base)
 ```
 
 ---
+# Extra - skimr 
 
+```{r skimr}
+library(skimr)
+
+skimr::skim(base)
+
+
+
+```
+
+
+---
 # Curiosidade! ;)
 
 **FYI:** Gapminder é uma organização sem fins lucrativos que promove o desenvolvimento e atingimento dos ODS ao difundir a compreensão de informações de ordem social, econômica, ambiental a nível local, nacional e global. 
