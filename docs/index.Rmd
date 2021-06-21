@@ -627,7 +627,7 @@ Veja que legal é o argumento col dentro do aes.
 paises <- c("Brazil","Argentina")
 
 gapminder %>% 
-  filter(country == paises) %>% 
+  filter(country %in% paises) %>% 
   ggplot(aes(x = year, y = lifeExp, col = country)) + geom_line() 
 
 ```
