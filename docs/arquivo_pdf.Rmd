@@ -1,0 +1,784 @@
+---
+title: "file_pdf"
+author: "Daniel Pagotto"
+date: "21/06/2021"
+output: pdf_document
+---
+
+```{r set diretorio, message=FALSE, warning=FALSE, include=FALSE}
+library(DT)
+setwd("~/GitHub/R_empreendedorismo1")
+```
+
+# Agradecimentos
+<br>
+  <br>
+  <br>
+```{r agradecimentos, figures-side, fig.show="hold", echo=FALSE, out.height="100%", out.width="100%", fig.align='center', fig.height=4, fig.cap=" "}
+
+knitr::include_graphics("imagem/agradecimentos.jpeg")
+
+```
+
+---
+# About me! 
+  
+- Bacharel em Administração (UnB), Mestre em Administração (UFG), doutorando em Administração (UnB)
+- Já desenvolveu projetos em áreas, como: empreendedorismo, gestão/políticas públicas, inovação na saúde
+- Há aproximadamente dois anos tem utilizado R rotineiramente em suas atividades de trabalho e  ministrado cursos para a comunidade de R 
+
+```{r gatas, figures-side, fig.show="hold", echo=FALSE, out.height="65%", out.width="75%", fig.align='center', fig.height=3, fig.cap=" "}
+
+knitr::include_graphics("imagem/logos-lape-cigets.png")
+
+```
+---
+class: inverse, middle, left
+# Divisão do curso 
+* **Módulo 1: conceitos básicos de R** 
+  + Cálculos básicos
++ Tipos de variáveis e objetos
++ O pacote dplyr para manipulação de dataframes
++ O pacote ggplot2 para visualização de dados
+* **Módulo 2: usando o R para explorar o Global Entrepreneurship Monitor (GEM)**
+  + Compreendedo as bases 
++ Tratando as bases 
++ Análise Exploratória dos Dados do GEM
+* **Módulo 3: usando o R para explorar o Panel Study of Entrepreneurial Dynamics (PSED)**
+  + Compreendendo a base
++ Tratando a base 
++ Análise Exploratória dos Dados do PSED
+
+---
+class: inverse, middle, left
+# Objetivos do módulo 1
+- Demonstrar a relevância do uso do R 
+- Aplicar operações básicas 
+- Descrever tipos de objetos 
+- Descrever tipos de variáveis 
+- Aplicar funções para manipular dataframes 
+- Aplicar funções para visualização de dados
+
+---
+# Por que usar o R?
+  
+```{r why_r, echo=FALSE, out.height="80%", out.width="80%",fig.align='center'}
+knitr::include_graphics("https://media.giphy.com/media/WMODmi5AX9ZEQ/giphy.gif")
+
+```
+---
+  
+  # O R me dá medo 
+  
+  Nunca programei... vou conseguir?
+  
+  ```{r r_spss, figures-side, fig.show="hold", echo=FALSE, out.height="100%", out.width="100%", fig.align='center', fig.height=3, fig.cap=" "}
+
+knitr::include_graphics("imagem/r_spss.png")
+```
+
+
+"Não consigo entender esse bando de código..."
+
+
+"É tão mais fácil usar o SPSS que basta alguns cliques e me gera resultados rapidamente..."
+
+
+"Toda vez que tento usar R é erro para cá, erro para lá..." 
+
+---
+  # R e ciência de dados
+  
+  ```{r linguagens, figures-side, fig.show="hold", echo=FALSE, out.height="70%", out.width="90%", fig.align='center', fig.height=1, fig.cap=" "}
+
+knitr::include_graphics("imagem/linguagens.png")
+```
+
+fonte: [Towards data science](https://towardsdatascience.com/training-your-staff-in-data-science-heres-how-to-pick-the-right-programming-language-dda349354b18)
+
+---
+  
+  # Data Literacy
+  
+  ```{r literacy, figures-side, fig.show="hold", echo=FALSE, out.height="70%", out.width="70%", fig.align='center', fig.height=3, fig.cap=" "}
+
+knitr::include_graphics("imagem/data-literacy.png")
+```
+
+fonte: [Medium](https://medium.com/somos-tera/data-literacy-o-que-%C3%A9-a-alfabetiza%C3%A7%C3%A3o-de-dados-e-porque-ela-%C3%A9-t%C3%A3o-importante-para-sua-empresa-951fcc5bcc67)
+
+---
+  
+  # Literatura científica 
+  
+  ```{r artigos, figures-side, fig.show="hold", echo=FALSE, out.height="100%", out.width="100%", fig.align='center', fig.height=3, fig.cap=" "}
+
+knitr::include_graphics("imagem/analytics-capabilities.png")
+```
+
+---
+  
+  # Na área de empreendedorismo
+  
+  ```{r sbe, figures-side, fig.show="hold", echo=FALSE, out.height="80%", out.width="80%", fig.align='center', fig.height=3, fig.cap=" "}
+
+knitr::include_graphics("imagem/sbe.png")
+```
+---
+  class: inverse, middle, center
+
+# Conceitos básicos de R
+
+---
+  # O R é um calculadora 
+  
+  ```{r operacoes_basicas}
+# Operações básicas
+5 + 5
+10 - 6
+10*2
+5/2
+5**2
+```
+---
+  
+  # Operações de atribuição 
+  
+  ```{r atribuicoes}
+sqrt(16)
+5*(50-45)
+
+#Atribuições
+x <- 5 + 5
+y <- 10 - 16
+a <- 9
+soma <- a + x
+nome <- "daniel"
+certo <- TRUE
+```
+---
+  
+  # Operações básicas
+  
+  ```{r operacoes} 
+pesoDaniel <- 79
+alturaDaniel <- 1.78
+imcDaniel <- pesoDaniel/alturaDaniel**2
+```
+
+Calcule o IMC de todas as pessoas
+```{r imc, figures-side, fig.show="hold", echo=FALSE, out.height="90%", out.width="90%", fig.align='center', fig.height=3, fig.cap=" "}
+
+knitr::include_graphics("imagem/imc.png")
+```
+
+---
+  # Vetores 
+  
+  Você até pode fazer o IMC de cada um individualmente. 
+
+Mas vou apresentar uma forma de resolver - existem várias formas, usando função, loops - usando um tipo de objeto chamado **vetor**. O vetor é um conjunto unidimensional de objetos de um mesmo tipo. 
+
+Traduzindo... imagina uma tabela de excel formada por várias colunas. Uma das colunas é a idade e está expressa em número. Pronto, um vetor é como se fosse uma coluna com valores de um mesmo tipo.
+
+```{r vetores}
+# trabalhando com vetores
+pesos <- c(65, 95, 75, 77, 80, 68)
+alturas <- c(1.60, 1.78, 1.80, 1.68, 1.72, 1.65)
+imc <- pesos/alturas**2
+imc
+```
+---
+  
+  # Daniel, consigo arredondar?
+  
+  Consegue! 
+  
+  ```{r round, message=FALSE, warning=FALSE}
+
+help(round)
+round(imc, 2)
+imc <- round(imc, 2) #estou sobrescrevendo um vetor
+# arredondado sobre ele mesmo
+imc
+
+```
+---
+  
+  # Matrizes 
+  As **matrizes** possui uma estrutura tabular, com linhas e colunas. Porém, semelhante ao vetor, todos os objetos devem ser de um mesmo tipo (ex.: tudo número, tudo caracter). 
+
+```{r matriz}
+Matriz<-cbind(pesos,alturas,imc)
+Matriz
+```
+
+---
+  # Matrizes
+  Veja que tem uma carinha de tabela. Mas daqui para frente vamos trabalhar com outra estrutura chamada **dataframe**. Essa estrutura tem formato tabular e ainda permite que os objetos tenham tipos diferentes, ou seja, posso ter uma coluna numérica, outra no formato data, outra no formato de caracteres e assim por diante. 
+
+Existe um tipo de estrutura de dados chamado **lista** muito importante também. Mas entrar nele é assunto para um curso de R intermediário.  
+
+```{r matriz2}
+rownames(Matriz) <- c("Alice","Gilmar","Cecilia","Bianca","Valentina","Augusto")
+Matriz
+```
+
+---
+  class: inverse, middle, center
+
+# Introduzindo funções para manipulação de dados
+
+---
+  
+  # Inspecionando o dataframe
+  
+  ```{r inspecionando}
+library(gapminder)
+basePaises <- gapminder
+
+# inspecionando a estrutura da base
+str(basePaises)
+
+```
+
+---
+  # Inspecionando elementos
+  
+  ```{r inspecionando2}
+# inspecionando as 6 primeiras observações 
+head(basePaises)
+
+```
+
+---
+  # Inspecionando elementos
+  ```{r inspecionando3}
+# inspecionando as 10 últimas observações
+tail(basePaises, n = 10)
+
+
+```
+
+---
+  # Inspecionando elementos
+  ```{r inspecionando4}
+# estatísticas descritivas da base
+summary(basePaises)
+```
+---
+  # Inspecionando elementos
+  ```{r inspecionando5}
+# Acessando uma variável da base
+basePaises$continent
+```
+
+---
+  # Inspecionando elementos
+  ```{r inspecionando6, message=FALSE, warning=FALSE}
+# Acessando elementos únicos
+unique(basePaises$year)
+
+mean(basePaises$lifeExp)
+
+# Vamos instalar nosso primeiro pacote: dplyr
+
+library(dplyr)
+glimpse(basePaises)
+```
+---
+  # Abrindo um parêntese 
+  <br>
+  <br> 
+  ```{r eleven, figures-side, fig.show="hold", echo=FALSE, out.height="100%", out.width="100%", fig.align='center', fig.height=3, fig.cap=" "}
+
+knitr::include_graphics("imagem/eleven.png")
+```
+
+---
+  # Função filter 
+  
+  ```{r filter, message=FALSE, warning=FALSE, paged.print=TRUE}
+basePaises %>% 
+  filter(continent == "Asia")
+
+```
+
+---
+  # Função filter 
+  
+  ```{r filter2, message=FALSE, warning=FALSE, paged.print=TRUE}
+
+basePaises%>%
+  filter(continent == "Americas" & year>1990)
+
+```
+---
+  # Função filter 
+  
+  ```{r filter3, message=FALSE, warning=FALSE, paged.print=TRUE}
+# != diferente 
+basePaises%>%
+  filter(continent != "Oceania")
+
+# Você pode armazenar sua consulta em outro objeto
+baseAsia <- basePaises%>%
+  filter(continent == "Asia")
+```
+
+---
+  # Função select
+  
+  ```{r select, message=FALSE, warning=FALSE}
+basePaises%>%
+  select(year,country,gdpPercap)
+
+```
+
+---
+  # Função select
+  
+  ```{r select2, message=FALSE, warning=FALSE}
+
+basePaises%>%
+  select(-lifeExp)
+```
+
+---
+  # Função select + filter
+  
+  ```{r select_filter}
+basePaises %>%
+  filter(continent == "Americas" & year>1990) %>%
+  select(year,country,gdpPercap)
+```
+
+---
+  # Função mutate 
+  
+  Serve para criar uma nova variável 
+```{r mutate}
+basePaises <- basePaises %>%
+  mutate(GDP = gdpPercap * pop)
+
+basePorte <- basePaises %>%
+  filter(year == 1992) %>%
+  mutate(porte = if_else(pop>median(pop),"G","P"))
+
+head(basePorte)
+
+```
+
+---
+  
+  # Funções group_by e summarize 
+  
+  ```{r group_by}
+basePaises %>%
+  group_by(country) %>%
+  summarize(meanLE=mean(lifeExp),meanPop=mean(pop),meanGpc=mean(gdpPercap))
+
+```
+
+---
+  # Funções group_by e summarize
+  <br>
+  ```{r group_by, figures-side, fig.show="hold", echo=FALSE, out.height="100%", out.width="100%", fig.align='center', fig.height=3, fig.cap=" "}
+
+knitr::include_graphics("imagem/group_by.png")
+```
+
+---
+  
+  # Funções group_by e summarize 
+  
+  ```{r group_by2}
+
+basePaises %>%
+  group_by(continent,year) %>%
+  summarize(meanLE=mean(lifeExp),meanPop=mean(pop),meanGpc=mean(gdpPercap))
+```
+
+---
+  # Funções top_n e arrange
+  A função top_n serve para selecionar os n maiores valores que desejar 
+
+```{r top_n}
+basePaises %>% 
+  filter(year == 2007) %>% 
+  top_n(5,pop) %>% 
+  arrange(desc(pop))
+
+
+```
+---
+  # Base ICE
+  ```{r ice, figures-side, fig.show="hold", echo=FALSE, out.height="100%", out.width="100%", fig.align='center', fig.height=3, fig.cap=" "}
+
+knitr::include_graphics("imagem/ice.png")
+```
+
+Fonte: [Índice de Cidades empreendedoras](https://ice.enap.gov.br/)
+
+---
+  # Joins
+  
+  ```{r munic}
+munic <- read.csv("https://raw.githubusercontent.com/danielppagotto/R_empreendedorismo1/main/arquivos%20de%20bases/politicas_empreendedorismo.csv",sep = ";", encoding = "UTF-8")
+```
+
+
+
+---
+  
+  class: inverse, middle, center
+
+# Introduzindo funções para visualização de dados
+
+---
+  # Dica de leitura 
+  
+  ```{r livro, figures-side, fig.show="hold", echo=FALSE, out.height="30%", out.width="40%", fig.align='center', fig.height=3, fig.cap=" "}
+
+knitr::include_graphics("imagem/storytelling.jpg")
+
+```
+
+---
+  
+  # Preparando nosso ambiente
+  
+  Antes de começar, vamos chamar alguns pacotes e preparar uma base que usaremos! Caso não tenha algum dos pacotes abaixo ainda, terá que baixar usando o comando **install.packages("nome do pacote")**.
+
+```{r inicializar, echo=TRUE, message=FALSE, warning=FALSE}
+library(ggplot2)
+library(dplyr)
+library(gapminder)
+
+base <- gapminder %>% 
+  filter(year == 2007) 
+
+glimpse(base)
+```
+
+---
+  # Extra - skimr 
+  
+  ```{r skimr}
+library(skimr)
+
+skimr::skim(base)
+
+
+
+```
+
+
+---
+  # Curiosidade! ;)
+  
+  **FYI:** Gapminder é uma organização sem fins lucrativos que promove o desenvolvimento e atingimento dos ODS ao difundir a compreensão de informações de ordem social, econômica, ambiental a nível local, nacional e global. 
+
+```{r ods, echo=FALSE, fig.align='center'}
+knitr::include_graphics("imagem/ODS.png")
+
+```
+
+---
+  
+  # GGPlot2 - a base de tudo
+  O R por si só possui funções para gerar gráficos, porém o ggplot2 é um pacote que fornece um conjunto bem extenso de possibilidades 
+
+```{r histograma1, echo=TRUE, message=FALSE, warning=FALSE,fig.align='center', fig.height=6, fig.width=6}
+
+hist(base$lifeExp)
+
+```
+
+---
+  
+  # GGPlot2 - a base de tudo
+  Vamos criar um histograma sobre a variável expectativa de vida. 
+
+```{r histograma2, echo=TRUE, message=FALSE, warning=FALSE,fig.align='center', fig.height=6, fig.width=6}
+
+ggplot(base, aes(x = lifeExp)) + geom_histogram()
+
+```
+---
+  
+  # GGPlot2 - Densidade
+  Vamos criar um gráfico de densidade sobre a variável expectativa de vida. Veja outra forma de usar a função ggplot. 
+
+```{r densidade, echo=TRUE, message=FALSE, warning=FALSE,fig.align='center', fig.height=6, fig.width=6}
+
+base %>% 
+  ggplot(aes(x = lifeExp)) + geom_density()
+
+```
+---
+  
+  # GGPlot2 - Boxplot
+  
+  Vamos criar um boxplot sobre a variável expectativa de vida. 
+
+```{r boxplot1, echo=TRUE, message=FALSE, warning=FALSE,fig.align='center', fig.height=6, fig.width=6}
+
+base %>% 
+  ggplot(aes(y = lifeExp)) + geom_boxplot()
+
+```
+
+---
+  
+  # GGPlot2 - Boxplot 2
+  
+  Vamos criar um boxplot sobre a variável expectativa de vida. 
+
+```{r boxplot2, echo=TRUE, message=FALSE, warning=FALSE,fig.align='center', fig.height=6, fig.width=6}
+
+base %>% 
+  ggplot(aes(x = continent, y = lifeExp)) + geom_boxplot()
+
+```
+---
+  
+  # GGPlot2 - Gráfico de colunas 
+  
+  Vamos criar um gráfico de barras da variável expectativa de vida. Nesse caso, vamos pegar os 10 países da Ásia com maior taxa de expectativa de vida. 
+
+```{r barras, echo=TRUE, message=FALSE, warning=FALSE,fig.align='center', fig.height=5, fig.width=4}
+
+base %>% 
+  filter(continent == "Asia") %>% 
+  top_n(n = 10, wt = lifeExp) %>% 
+  ggplot(aes(x = country, y = lifeExp)) + geom_col() 
+
+```
+
+---
+  
+  # GGPlot2 - Coord_flip
+  
+  Veja como melhorar a visualização com um simples argumento 
+
+```{r barras2, echo=TRUE, message=FALSE, warning=FALSE,fig.align='center', fig.height=5, fig.width=4}
+
+base %>% 
+  filter(continent == "Asia") %>% 
+  top_n(n = 10, wt = lifeExp) %>% 
+  ggplot(aes(x = country, y = lifeExp)) + geom_col() + coord_flip()
+
+```
+
+---
+  
+  #Mas, Daniel, consigo deixar em ordem?
+  Sim, para isso, vamos usar uma função do pacote forcats.
+
+```{r barras3, echo=TRUE, message=FALSE, warning=FALSE,fig.align='center', fig.height=4, fig.width=6}
+library(forcats)
+base %>% 
+  filter(continent == "Asia") %>% 
+  top_n(n = 10, wt = lifeExp) %>% 
+  ggplot(aes(x = fct_reorder(country,lifeExp), y = lifeExp)) + geom_col() + coord_flip()
+
+```
+---
+  
+  # GGPlot2 - Labels
+  
+  Adicionando labels 
+
+```{r barras4, echo=TRUE, message=FALSE, warning=FALSE,fig.align='center', fig.height=5, fig.width=4}
+
+base %>% 
+  filter(continent == "Asia") %>% 
+  top_n(n = 10, wt = lifeExp) %>% 
+  ggplot(aes(x = fct_reorder(country,lifeExp), y = lifeExp)) + geom_col() + 
+  geom_label(aes(label=round(lifeExp))) +  coord_flip()
+
+```
+---
+  
+  # GGPlot2 - Linhas
+  
+  Para fazer esse gráfico, vamos usar a base original, gapminder, e filtrar apenas o Brasil. 
+
+```{r linhas, echo=TRUE, message=FALSE, warning=FALSE,fig.align='center', fig.height=5, fig.width=6}
+
+gapminder %>% 
+  filter(country == "Brazil") %>% 
+  ggplot(aes(x = year, y = lifeExp)) + geom_line() 
+
+```
+---
+  
+  # GGPlot2 - Argumento col
+  
+  Veja que legal é o argumento col dentro do aes.
+
+```{r linhas2, echo=TRUE, message=FALSE, warning=FALSE,fig.align='center', fig.height=5, fig.width=6}
+paises <- c("Brazil","Argentina")
+
+gapminder %>% 
+  filter(country %in% paises) %>% 
+  ggplot(aes(x = year, y = lifeExp, col = country)) + geom_line() 
+
+```
+---
+  
+  # Usando argumento fill 
+  
+  Vamos ver como funciona o argumento `fill`
+
+```{r densidade_customizada2, echo=TRUE, fig.align='center', fig.height=5.5, fig.width=6.5, message=FALSE, warning=FALSE}
+
+base %>% 
+  top_n(10) %>% 
+  ggplot(aes(x = fct_reorder(country,gdpPercap), y=gdpPercap, fill = continent)) + geom_col() + coord_flip()
+
+```
+---
+  
+  # Massa, Daniel! 
+  Você falou que podíamos customizar muita coisa. E aí? Calma, jovem, veja só...  
+
+```{r densidade customizada, echo=TRUE, fig.align='center', fig.height=5.5, fig.width=5.5, message=FALSE, warning=FALSE}
+
+ggplot(base,aes(x=lifeExp)) + geom_density(fill="darkblue") +
+  labs(title = "Histograma da expectativa de vida", 
+       x = "Expectativa de vida", y = "Frequência") + theme_minimal()
+```
+---
+  
+  # Vamos trabalhar com duas variáveis... 
+  
+  Vamos relacionar duas variáveis: PIB per capita e expectativa de vida 
+
+```{r scatter, echo=TRUE, fig.align='center', fig.height=5.5, fig.width=6.5, message=FALSE, warning=FALSE}
+
+ggplot(base,aes(x=log(gdpPercap),y=lifeExp)) + geom_point() +
+  labs(x = "PIB per capita (log)", y = "Expectativa de vida") + theme_bw()
+```
+---
+  
+  # Mais uma camada...
+  
+  ```{r scatter2, echo=TRUE, fig.align='center', fig.height=5.5, fig.width=5.5, message=FALSE, warning=FALSE}
+
+ggplot(base,aes(y=lifeExp, x=log(gdpPercap))) + geom_point() +
+  geom_smooth(method = "lm", se=FALSE) + 
+  labs(x = "PIB per capita (log)",
+       y = "Expectativa de vida") + theme_bw()
+```
+---
+  
+  # Argumento col 
+  
+  ```{r scatter3, echo=TRUE, fig.align='center', fig.height=5.5, fig.width=5.5, message=FALSE, warning=FALSE}
+
+ggplot(base,aes(y=lifeExp, x=log(gdpPercap), col=continent)) + geom_point() +
+  geom_smooth(method = "lm", se=FALSE) + 
+  labs(x = "PIB per capita (log)",
+       y = "Expectativa de vida") + theme_bw()
+```
+---
+  
+  # Argumento size
+  
+  ```{r scatter4, echo=TRUE, fig.align='center', fig.height=5.5, fig.width=5.5, message=FALSE, warning=FALSE}
+
+ggplot(base,aes(y=lifeExp, x=log(gdpPercap), col=continent,size = pop)) + geom_point() +
+  geom_smooth(method = "lm", se=FALSE) + 
+  labs(x = "PIB per capta (log)",
+       y = "Expectativa de vida") + theme_bw()
+```
+---
+  
+  # Facet 
+  
+  ```{r scatter5, echo=TRUE, fig.align='center', fig.height=5.5, fig.width=8, message=FALSE, warning=FALSE}
+
+ggplot(base,aes(x=log(gdpPercap), y=lifeExp, col=continent,
+                size = pop)) + geom_point() + geom_smooth(method = "lm", se=FALSE) + 
+  labs(x = "PIB per capita (log)", y = "Expectativa de vida") + theme_bw() + 
+  facet_grid(~continent)
+```
+---
+  
+  # Tabela interativa (Bônus!)
+  Conhecimentos nerds extras. Clique [aqui](https://rstudio.github.io/DT/) para conhecer mais do pacote DT. 
+
+```{r datatable, fig.height=5, fig.width=5}
+DT::datatable(base, options = list(pageLength = 5), class = 'cell-border stripe')
+```
+---
+  
+  # Tarefa de casa
+  
+  1) Crie um boxplot para a variável expectativa de vida
+
+2) Crie um boxplot para a variável expectativa de vida e cada  continentes em um mesmo painel
+
+3) Faça o mesmo que a questão 2, mas dessa vez use facet
+
+4) Insira título nos gráficos, mude o nome dos eixos e coloque outro tema
+
+5) Faça um gráfico de linha com a evolução do PIB per capta do Brasil, Argentina, Portugal e China
+```{r gif_data2, echo=FALSE, out.height="10%", out.width="20%",fig.align='center'}
+knitr::include_graphics("https://media.giphy.com/media/ptPx1nVWOG32E/giphy.gif")
+```
+
+---
+  
+  # Criando gráficos com Esquisse 
+  
+  esquisser(viewer = "browser")
+
+
+```{r imagem_esquisse, figures-side, fig.show="hold", echo=FALSE, out.height="70%", out.width="90%", fig.align='center', fig.height=3, fig.cap=" "}
+
+knitr::include_graphics("imagem/esquisse.png")
+
+```
+
+---
+  
+  # Gerando gráficos interativos 
+  
+  Vamos resgatar um gráfico que fizemos lá atrás 
+
+```{r plotly2, echo=TRUE, message=FALSE, fig.height=4, fig.width=5.5, warning=FALSE, fig.align='center'}
+library(plotly)
+
+grafico <- ggplot(base,aes(y=lifeExp, x=log(gdpPercap), col=continent)) + geom_point() +
+  labs(x = "PIB per capita (log)",
+       y = "Expectativa de vida") + theme_bw()
+
+ggplotly(grafico)
+
+```
+---
+  
+  # Para aprender mais
+  
+- [GGPlot2 cheat sheet](https://rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf)
+- [GGPlot2 - LAPEI](https://www.youtube.com/watch?v=IPyjHKe30eo)
+- [Plotly](https://plotly.com/)
+- [Blog Datanovia](https://www.datanovia.com/en/blog/gganimate-how-to-create-plots-with-beautiful-animation-in-r/)
+- [Datavis with R](https://rkabacoff.github.io/datavis/Interactive.html)
+Apresentação feita com Rmarkdown, usando pacote xaringã
+
+```{r gif_aprofundar, echo=FALSE, fig.align='center', warning=FALSE, out.height="40%", out.width="70%"}
+knitr::include_graphics("https://media.giphy.com/media/13HBDT4QSTpveU/giphy.gif")
+```
+
+---
+  class: inverse, middle, center
+
+# Obrigado
+
+**Daniel Pagotto** | danielppagotto@gmail.com | [LinkedIn](https://www.linkedin.com/in/daniel-do-prado-pagotto-bab62a50/)
+
+
