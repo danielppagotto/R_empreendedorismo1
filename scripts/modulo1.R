@@ -12,10 +12,12 @@
 # 1) retire os # da frente de cada linha; 2) rode cada comando (ctrl + Enter)
 
 # install.packages("dplyr")
-# install.packages("ggplo2")
+# install.packages("ggplot2")
 # install.packages("skimr")
 # install.packages("forcats")
 # install.packages("gapminder")
+# install.packages("DT")
+# install.packages("plotly")
 
 library(dplyr)
 library(ggplot2)
