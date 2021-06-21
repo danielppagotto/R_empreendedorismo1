@@ -262,7 +262,6 @@ head(basePaises)
 # inspecionando as 10 últimas observações
 tail(basePaises, n = 10)
 
-
 ```
 
 ---
