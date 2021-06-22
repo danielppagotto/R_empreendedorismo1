@@ -486,8 +486,7 @@ base %>%
 
 ```
 
-## Massa, Daniel! 
-Você falou que podíamos customizar muita coisa. E aí?   
+## Podemos customizar mais coisas?   
 
 ```{r densidade customizada, echo=TRUE, fig.align='center', fig.height=5.5, fig.width=5.5, message=FALSE, warning=FALSE}
 
@@ -496,7 +495,7 @@ ggplot(base,aes(x=lifeExp)) + geom_density(fill="darkblue") +
        x = "Expectativa de vida", y = "Frequência") + theme_minimal()
 ```
 
-Dá para customizar uma muitos outros elementos: cores de fundo, de linhas, tamanho de letras, posição da legenda e assim por diante. 
+É possível customizar muitos outros elementos: cores de fundo, de linhas, tamanho de letras, posição da legenda e assim por diante. 
 
 ## Vamos trabalhar com duas variáveis 
 Vamos relacionar duas variáveis: PIB per capita e expectativa de vida 
