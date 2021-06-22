@@ -313,7 +313,7 @@ basePaises %>%
 
 ```{r filter2, message=FALSE, warning=FALSE, paged.print=TRUE}
 
-basePaises%>%
+basePaises %>%
   filter(continent == "Americas" & year>1990)
 
 ```
@@ -322,7 +322,7 @@ basePaises%>%
 
 ```{r filter3, message=FALSE, warning=FALSE, paged.print=TRUE}
 # != diferente 
-basePaises%>%
+basePaises %>%
   filter(continent != "Oceania")
 
 # Você pode armazenar sua consulta em outro objeto
@@ -334,7 +334,7 @@ baseAsia <- basePaises%>%
 # Função select
 
 ```{r select, message=FALSE, warning=FALSE}
-basePaises%>%
+basePaises %>%
   select(year,country,gdpPercap)
 
 ```
@@ -431,6 +431,10 @@ Fonte: [Índice de Cidades empreendedoras](https://ice.enap.gov.br/)
 munic <- read.csv("https://raw.githubusercontent.com/danielppagotto/R_empreendedorismo1/main/arquivos%20de%20bases/politicas_empreendedorismo.csv",sep = ";", encoding = "UTF-8")
 ```
 
+```{r ice}
+ice <- read.csv("https://raw.githubusercontent.com/danielppagotto/R_empreendedorismo1/main/arquivos%20de%20bases/base_ice.csv",sep = ";", encoding = "UTF-8") %>% rename(cidade = X.U.FEFF.cidade)
+  
+```
 
 
 ---
@@ -730,9 +734,6 @@ DT::datatable(base, options = list(pageLength = 5), class = 'cell-border stripe'
 4) Insira título nos gráficos, mude o nome dos eixos e coloque outro tema
 
 5) Faça um gráfico de linha com a evolução do PIB per capta do Brasil, Argentina, Portugal e China
-```{r gif_data2, echo=FALSE, out.height="10%", out.width="20%",fig.align='center'}
-knitr::include_graphics("https://media.giphy.com/media/ptPx1nVWOG32E/giphy.gif")
-```
 
 ---
 
@@ -774,9 +775,6 @@ ggplotly(grafico)
 - [Datavis with R](https://rkabacoff.github.io/datavis/Interactive.html)
 Apresentação feita com Rmarkdown, usando pacote xaringã
 
-```{r gif_aprofundar, echo=FALSE, fig.align='center', warning=FALSE, out.height="40%", out.width="70%"}
-knitr::include_graphics("https://media.giphy.com/media/13HBDT4QSTpveU/giphy.gif")
-```
 
 ---
 class: inverse, middle, center
