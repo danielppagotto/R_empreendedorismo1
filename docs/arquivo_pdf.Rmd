@@ -319,11 +319,53 @@ Fonte: [MUNIC](https://www.ibge.gov.br/estatisticas/sociais/saude/10586-pesquisa
 ## Baixando as bases direto do meu github
   
 ```{r munic}
-munic <- read.csv("https://raw.githubusercontent.com/danielppagotto/R_empreendedorismo1/main/arquivos%20de%20bases/politicas_empreendedorismo.csv",sep = ";", encoding = "UTF-8")
+munic <- read.csv("https://raw.githubusercontent.com/danielppagotto/R_empreendedorismo1/main/arquivos%20de%20bases/politicas_empreendedorismo.csv",sep = ";", encoding = "UTF-8") %>% rename(cod_cidade = "X.U.FEFF.CodMun")
+
+ice <- read.csv("https://raw.githubusercontent.com/danielppagotto/R_empreendedorismo1/main/arquivos%20de%20bases/base_ice.csv",sep = ";", encoding = "UTF-8") %>% rename(cidade = "X.U.FEFF.cidade")
 ```
 
-## Joins
+## Inspecionando as bases
 
+```{r inspec_munic}
+glimpse(munic)
+```
+
+```{r inspec_ice}
+glimpse(ice)
+```
+
+Vamos juntar as bases por meio das colunsa cod_cidade e cod_ibge. Um ponto **muito importante**. Ambas variáveis devem estar no mesmo tipo. No caso, ambas estão como `int`. Caso uma fosse factor e a outra int, o join geraria uma mensagem de erro. 
+
+Vamos supor que o cod_ibge da base ice estive em formato fct (factor, lembra da Eleven do Stranger Things). Para transformá-lo para o formato int seria só necessário aplicar o seguinte comando. 
+
+```{r transformando int}
+ice$cod_ibge <- as.integer(ice$cod_ibge)
+```
+
+
+## inner_join 
+
+```{r inner, figures-side, fig.show="hold", echo=FALSE, out.height="100%", out.width="100%", fig.align='center', fig.height=3}
+
+knitr::include_graphics("imagem/inner_join.png")
+```
+
+```{r}
+inner <- munic %>% 
+  inner_join(ice, by = c("cod_cidade"="cod_ibge"))
+```
+
+## left_join
+
+```{r left, figures-side, fig.show="hold", echo=FALSE, out.height="100%", out.width="100%", fig.align='center', fig.height=3}
+
+knitr::include_graphics("imagem/left_join.png")
+```
+
+```{r}
+left <- munic %>% 
+  left_join(ice, by = c("cod_cidade"="cod_ibge"))
+```
 
 # Introduzindo funções para visualização de dados
 
@@ -403,206 +445,4 @@ base %>%
 
 ## Gráfico de colunas 
   
-Vamos criar um gráfico de barras da variável expectativa de vida. Nesse caso, vamos pegar os 10 países da Ásia com maior taxa de expectativa de vida. 
-
-```{r barras, echo=TRUE, message=FALSE, warning=FALSE,fig.align='center', fig.height=5, fig.width=4}
-
-base %>% 
-  filter(continent == "Asia") %>% 
-  top_n(n = 10, wt = lifeExp) %>% 
-  ggplot(aes(x = country, y = lifeExp)) + geom_col() 
-
-```
-
-## Coord_flip
-  
-Veja como melhorar a visualização com um simples argumento 
-
-```{r barras2, echo=TRUE, message=FALSE, warning=FALSE,fig.align='center', fig.height=5, fig.width=4}
-
-base %>% 
-  filter(continent == "Asia") %>% 
-  top_n(n = 10, wt = lifeExp) %>% 
-  ggplot(aes(x = country, y = lifeExp)) + geom_col() + coord_flip()
-
-```
-
-## Mas consigo deixar em ordem?
-Sim, para isso, vamos usar uma função do pacote forcats.
-
-```{r barras3, echo=TRUE, message=FALSE, warning=FALSE,fig.align='center', fig.height=4, fig.width=6}
-library(forcats)
-base %>% 
-  filter(continent == "Asia") %>% 
-  top_n(n = 10, wt = lifeExp) %>% 
-  ggplot(aes(x = fct_reorder(country,lifeExp), y = lifeExp)) + geom_col() + coord_flip()
-
-```
-
-## Labels
-Adicionando labels 
-
-```{r barras4, echo=TRUE, message=FALSE, warning=FALSE,fig.align='center', fig.height=5, fig.width=4}
-
-base %>% 
-  filter(continent == "Asia") %>% 
-  top_n(n = 10, wt = lifeExp) %>% 
-  ggplot(aes(x = fct_reorder(country,lifeExp), y = lifeExp)) + geom_col() + 
-  geom_label(aes(label=round(lifeExp))) +  coord_flip()
-
-```
-
-## Linhas
-Para fazer esse gráfico, vamos usar a base original, gapminder, e filtrar apenas o Brasil. 
-
-```{r linhas, echo=TRUE, message=FALSE, warning=FALSE,fig.align='center', fig.height=5, fig.width=6}
-
-gapminder %>% 
-  filter(country == "Brazil") %>% 
-  ggplot(aes(x = year, y = lifeExp)) + geom_line() 
-
-```
-
-## Argumento col
-Veja que legal é o argumento col dentro do aes. Nesse caso pegamos Brasil e Argentina. Olha como estamos filtrando... Primeiro criamos um vetor com o nome dos países e depois aplicamos o filter umando o `%in`.
-
-```{r linhas2, echo=TRUE, message=FALSE, warning=FALSE,fig.align='center', fig.height=5, fig.width=6}
-paises <- c("Brazil","Argentina")
-
-gapminder %>% 
-  filter(country %in% paises) %>% 
-  ggplot(aes(x = year, y = lifeExp, col = country)) + geom_line() 
-
-```
-
-## Usando argumento fill 
-Vamos ver como funciona o argumento `fill`
-
-```{r densidade_customizada2, echo=TRUE, fig.align='center', fig.height=5.5, fig.width=6.5, message=FALSE, warning=FALSE}
-
-base %>% 
-  top_n(10) %>% 
-  ggplot(aes(x = fct_reorder(country,gdpPercap), y=gdpPercap, fill = continent)) + geom_col() + coord_flip()
-
-```
-
-## Podemos customizar mais coisas?   
-
-```{r densidade customizada, echo=TRUE, fig.align='center', fig.height=5.5, fig.width=5.5, message=FALSE, warning=FALSE}
-
-ggplot(base,aes(x=lifeExp)) + geom_density(fill="darkblue") +
-  labs(title = "Histograma da expectativa de vida", 
-       x = "Expectativa de vida", y = "Frequência") + theme_minimal()
-```
-
-É possível customizar muitos outros elementos: cores de fundo, de linhas, tamanho de letras, posição da legenda e assim por diante. 
-
-## Vamos trabalhar com duas variáveis 
-Vamos relacionar duas variáveis: PIB per capita e expectativa de vida 
-
-```{r scatter, echo=TRUE, fig.align='center', fig.height=5.5, fig.width=6.5, message=FALSE, warning=FALSE}
-
-ggplot(base,aes(x=log(gdpPercap),y=lifeExp)) + geom_point() +
-  labs(x = "PIB per capita (log)", y = "Expectativa de vida") + theme_bw()
-```
-
-## Mais uma camada
-  
-```{r scatter2, echo=TRUE, fig.align='center', fig.height=5.5, fig.width=5.5, message=FALSE, warning=FALSE}
-
-ggplot(base,aes(y=lifeExp, x=log(gdpPercap))) + geom_point() +
-  geom_smooth(method = "lm", se=FALSE) + 
-  labs(x = "PIB per capita (log)",
-       y = "Expectativa de vida") + theme_bw()
-```
-
-## Argumento col 
-  
-```{r scatter3, echo=TRUE, fig.align='center', fig.height=5.5, fig.width=5.5, message=FALSE, warning=FALSE}
-
-ggplot(base,aes(y=lifeExp, x=log(gdpPercap), col=continent)) + geom_point() +
-  geom_smooth(method = "lm", se=FALSE) + 
-  labs(x = "PIB per capita (log)",
-       y = "Expectativa de vida") + theme_bw()
-```
-
-## Argumento size
-  
-```{r scatter4, echo=TRUE, fig.align='center', fig.height=5.5, fig.width=5.5, message=FALSE, warning=FALSE}
-
-ggplot(base,aes(y=lifeExp, x=log(gdpPercap), col=continent,size = pop)) + geom_point() +
-  geom_smooth(method = "lm", se=FALSE) + 
-  labs(x = "PIB per capta (log)",
-       y = "Expectativa de vida") + theme_bw()
-```
-
-## Facet 
-  
-```{r scatter5, echo=TRUE, fig.align='center', fig.height=5.5, fig.width=8, message=FALSE, warning=FALSE}
-
-ggplot(base,aes(x=log(gdpPercap), y=lifeExp, col=continent,
-                size = pop)) + geom_point() + geom_smooth(method = "lm", se=FALSE) + 
-  labs(x = "PIB per capita (log)", y = "Expectativa de vida") + theme_bw() + 
-  facet_grid(~continent)
-```
-
-
-## Tarefa de casa
-  
-1) Crie um boxplot para a variável expectativa de vida
-
-2) Crie um boxplot para a variável expectativa de vida e cada  continentes em um mesmo painel
-
-3) Faça o mesmo que a questão 2, mas dessa vez use facet
-
-4) Insira título nos gráficos, mude o nome dos eixos e coloque outro tema
-
-5) Faça um gráfico de linha com a evolução do PIB per capta do Brasil, Argentina, Portugal e China
-
-## Criando gráficos com Esquisse 
-
-O esquisse permite visualizar gráficos no estilo ggplot2 usando point n' click. É uma ótima ferramenta para "estudar" o ggplot2.  
-
-esquisser(viewer = "browser")
-
-```{r imagem_esquisse, figures-side, fig.show="hold", echo=FALSE, out.height="70%", out.width="90%", fig.align='center', fig.height=3, fig.cap=" "}
-
-knitr::include_graphics("imagem/esquisse.png")
-
-```
-
-## Gerando gráficos interativos 
-  
-Vamos resgatar um gráfico que fizemos lá atrás 
-
-```{r plotly2, echo=TRUE, message=FALSE, fig.height=4, fig.width=5.5, warning=FALSE, fig.align='center'}
-library(plotly)
-
-grafico <- ggplot(base,aes(y=lifeExp, x=log(gdpPercap), col=continent)) + geom_point() +
-  labs(x = "PIB per capita (log)",
-       y = "Expectativa de vida") + theme_bw()
-
-ggplotly(grafico)
-
-```
-
-# Para aprender mais
-
-Ao clicar será direcionad@ para a página indicada
-
-- [GGPlot2 cheat sheet](https://rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf)
-- [GGPlot2 - LAPEI](https://www.youtube.com/watch?v=IPyjHKe30eo)
-- [Plotly](https://plotly.com/)
-- [Blog Datanovia](https://www.datanovia.com/en/blog/gganimate-how-to-create-plots-with-beautiful-animation-in-r/)
-- [Datavis with R](https://rkabacoff.github.io/datavis/Interactive.html)
-- [Live Curso-R sobre extensões do ggplot2](https://www.youtube.com/watch?v=LXZhvWE2ne8&t=7267s)
-- [The R graph gallery](https://www.r-graph-gallery.com/)
-- [Documentação dplyr](https://cloud.r-project.org/web/packages/dplyr/dplyr.pdf)
-- [Documentação ggplot2](https://cloud.r-project.org/web/packages/ggplot2/ggplot2.pdf)
-
-# Obrigado
-## Se encontrou algum erro ou tem alguma sugestão de melhoria pode entrar em contato. Se foi útil também avise! Ah... e pode passar adiante. Quanto mais gente tendo acesso a esse conhecimento melhor! 
-
-**Daniel Pagotto** | danielppagotto@gmail.com | [LinkedIn](https://www.linkedin.com/in/daniel-do-prado-pagotto-bab62a50/)
-
-
+Vamos criar um gráfico de barras da variável expectativa de vida. Nesse caso, vamos pegar os 10 países da Ásia co %>% %>% %>% 

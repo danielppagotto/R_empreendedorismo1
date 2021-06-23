@@ -417,26 +417,58 @@ basePaises %>%
 ```
 ---
 # Base ICE
-```{r ice, figures-side, fig.show="hold", echo=FALSE, out.height="100%", out.width="100%", fig.align='center', fig.height=3, fig.cap=" "}
+```{r ice, figures-side, fig.show="hold", echo=FALSE, out.height="80%", out.width="90%", fig.align='center', fig.height=3, fig.cap=" "}
 
 knitr::include_graphics("imagem/ice.png")
 ```
 
 Fonte: [Índice de Cidades empreendedoras](https://ice.enap.gov.br/)
-
----
-# Joins
-
-```{r munic}
-munic <- read.csv("https://raw.githubusercontent.com/danielppagotto/R_empreendedorismo1/main/arquivos%20de%20bases/politicas_empreendedorismo.csv",sep = ";", encoding = "UTF-8")
-```
-
 ```{r ice}
-ice <- read.csv("https://raw.githubusercontent.com/danielppagotto/R_empreendedorismo1/main/arquivos%20de%20bases/base_ice.csv",sep = ";", encoding = "UTF-8") %>% rename(cidade = X.U.FEFF.cidade)
+ice <- read.csv("https://raw.githubusercontent.com/danielppagotto/R_empreendedorismo1/main/arquivos%20de%20bases/base_ice.csv",sep = ";", encoding = "UTF-8")
   
 ```
+---
+# Base Munic
+
+```{r munic, figures-side, fig.show="hold", echo=FALSE, out.height="80%", out.width="90%", fig.align='center', fig.height=3, fig.cap=" "}
+
+knitr::include_graphics("imagem/munic.png")
+```
+
+Fonte: [Pesquisa de Informações Básicas Municipais](https://www.ibge.gov.br/estatisticas/sociais/saude/10586-pesquisa-de-informacoes-basicas-municipais.html)
 
 
+```{r munic2}
+munic <- read.csv("https://raw.githubusercontent.com/danielppagotto/R_empreendedorismo1/main/arquivos%20de%20bases/politicas_empreendedorismo.csv",sep = ";", encoding = "UTF-8") %>% rename(cod_cidade = X.U.FEFF.CodMun)
+```
+
+---
+# Inner Join
+
+```{r inner, figures-side, fig.show="hold", echo=FALSE, out.height="100%", out.width="100%", fig.align='center', fig.height=3}
+
+knitr::include_graphics("imagem/inner_join.png")
+```
+---
+# Left Join
+
+```{r left, figures-side, fig.show="hold", echo=FALSE, out.height="100%", out.width="100%", fig.align='center', fig.height=3}
+
+knitr::include_graphics("imagem/left_join.png")
+```
+
+---
+# Aplicando os joins 
+
+```{r joins}
+inner <- munic %>% 
+  inner_join(ice, by = c("cod_cidade"="cod_ibge"))
+
+left <- munic %>% 
+  left_join(ice, by = c("cod_cidade"="cod_ibge"))
+```
+
+Faça o exercício de inspecionar cada um desses bases para verificar o resultado. 
 ---
 
 class: inverse, middle, center
