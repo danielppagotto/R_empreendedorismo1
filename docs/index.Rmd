@@ -16,14 +16,11 @@ library(DT)
 
 # Agradecimentos
 <br>
-<br>
-<br>
 ```{r agradecimentos, figures-side, fig.show="hold", echo=FALSE, out.height="100%", out.width="100%", fig.align='center', fig.height=4, fig.cap=" "}
 
-knitr::include_graphics("imagem/agradecimentos.jpeg")
+knitr::include_graphics("imagem/realizacao.png")
 
 ```
-
 
 ---
 # About me! 
@@ -32,9 +29,9 @@ knitr::include_graphics("imagem/agradecimentos.jpeg")
 - Já desenvolveu projetos em áreas, como: empreendedorismo, gestão/políticas públicas, inovação na saúde
 - Há aproximadamente dois anos tem utilizado R rotineiramente em suas atividades de trabalho e  ministrado cursos para a comunidade de R 
 
-```{r gatas, figures-side, fig.show="hold", echo=FALSE, out.height="65%", out.width="75%", fig.align='center', fig.height=3, fig.cap=" "}
+```{r gatas, figures-side, fig.show="hold", echo=FALSE, out.height="70%", out.width="80%", fig.align='center', fig.height=3, fig.cap=" "}
 
-knitr::include_graphics("imagem/logos-lape-cigets.png")
+knitr::include_graphics("imagem/trabalho.png")
 
 ```
 ---
