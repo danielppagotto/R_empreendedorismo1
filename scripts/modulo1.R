@@ -164,8 +164,16 @@ basePaises %>%
 
 # lendo a base munic a partir do meu repositorio do Github
 munic <- read.csv("https://raw.githubusercontent.com/danielppagotto/R_empreendedorismo1/main/arquivos%20de%20bases/politicas_empreendedorismo.csv",
-                  sep = ";", encoding = "UTF-8")
+                  sep = ";", encoding = "UTF-8") %>% rename(cod_cidade = X.U.FEFF.CodMun)
 
+ice <- read.csv("https://raw.githubusercontent.com/danielppagotto/R_empreendedorismo1/main/arquivos%20de%20bases/base_ice.csv",
+                sep = ";", encoding = "UTF-8")
+
+inner <- munic %>% 
+  inner_join(ice, by = c("cod_cidade"="cod_ibge"))
+
+left <- munic %>% 
+  left_join(ice, by = c("cod_cidade"="cod_ibge"))
 
 # Visualização de dados ---------------------------------------------------
 
