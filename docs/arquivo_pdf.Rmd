@@ -1,6 +1,6 @@
 ---
 title: "Cadernos de Scripts - módulo 1"
-author: "LAPEI-UFG"
+author: "Daniel Pagotto e Fernanda Arantes (LAPEI-UFG)"
 date: "21/06/2021"
 output: 
   pdf_document:
