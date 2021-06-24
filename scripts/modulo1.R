@@ -1,7 +1,7 @@
 
 # Curso de R 
 # Mod. 1 - Conceitos básicos 
-# Desenvolvido por Daniel do Prado Pagotto 
+# Desenvolvido por Daniel do Prado Pagotto (LAPEI-UFG)
 
 # Os "#" representam um comentário. O R pula as linhas que tiverem esse #
 # Para rodar cada linha, coloque o cursor sobre a linha do comando e 
