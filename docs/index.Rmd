@@ -802,8 +802,8 @@ ggplotly(grafico)
 - [Plotly](https://plotly.com/)
 - [Blog Datanovia](https://www.datanovia.com/en/blog/gganimate-how-to-create-plots-with-beautiful-animation-in-r/)
 - [Datavis with R](https://rkabacoff.github.io/datavis/Interactive.html)
-Apresentação feita com Rmarkdown, usando pacote xaringã
 
+Apresentação feita com Rmarkdown, usando pacote xaringã
 
 ---
 class: inverse, middle, center
