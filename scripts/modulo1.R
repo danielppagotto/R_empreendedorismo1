@@ -1,14 +1,14 @@
 
 # Curso de R 
-# Mod. 1 - Conceitos básicos 
+# Mod. 1 - Conceitos basicos 
 # Desenvolvido por Daniel do Prado Pagotto (LAPEI-UFG)
 
-# Os "#" representam um comentário. O R pula as linhas que tiverem esse #
+# Os "#" representam um coment?rio. O R pula as linhas que tiverem esse #
 # Para rodar cada linha, coloque o cursor sobre a linha do comando e 
-# aperte ctrl + Enter (ou cmd + Enter, para o usuários de Mac)
+# aperte ctrl + Enter (ou cmd + Enter, para o usu?rios de Mac)
 
-# Os pacotes abaixo serão usados ao longo da nossa aula. Caso não tenha eles 
-# instalados no seu R, é necessário instalar usando os comandos abaixo: 
+# Os pacotes abaixo serao usados ao longo da nossa aula. Caso n?o tenha eles 
+# instalados no seu R, ? necess?rio instalar usando os comandos abaixo: 
 # 1) retire os # da frente de cada linha; 2) rode cada comando (ctrl + Enter)
 
 # install.packages("dplyr")
@@ -27,7 +27,7 @@ library(gapminder)
 
 # Parte 1 - Operacoes, atribuicoes e objetos ------------------------------
 
-# Operações básicas
+# Opera??es b?sicas
 
 5 + 5
 10 - 6
@@ -37,7 +37,7 @@ library(gapminder)
 sqrt(16)
 5*(50-45)
 
-#Atribuições
+#Atribui??es
 
 x <- 5 + 5
 y <- 10 - 16
@@ -61,7 +61,7 @@ help(round)
 round(imc, 2)
 
 imc <- round(imc, 2) #estou sobrescrevendo um vetor
-                     # arredondado sobre ele mesmo
+# arredondado sobre ele mesmo
 imc
 
 # Trabalhando com matrizes 
@@ -72,29 +72,29 @@ rownames(Matriz) <- c("Alice","Gilmar","Cecilia","Bianca","Valentina","Augusto")
 Matriz
 
 
-# Manipulação de dados  ---------------------------------------------------
+# Manipula??o de dados  ---------------------------------------------------
 
 basePaises <- gapminder
 
 # inspecionando a estrutura da base
 str(basePaises)
 
-# inspecionando as 6 primeiras observações 
+# inspecionando as 6 primeiras observa??es 
 head(basePaises)
 
-# inspecionando as 10 últimas observações
+# inspecionando as 10 ?ltimas observa??es
 tail(basePaises, n = 10)
 
-# estatísticas descritivas da base
+# estat?sticas descritivas da base
 summary(basePaises)
 
-# Acessando uma variável da base
+# Acessando uma vari?vel da base
 basePaises$continent
 
-# Acessando elementos únicos
+# Acessando elementos ?nicos
 unique(basePaises$year)
 
-# Média de um vetor
+# M?dia de um vetor
 mean(basePaises$lifeExp)
 
 
@@ -114,7 +114,7 @@ basePaises%>%
 basePaises%>%
   filter(continent != "Oceania")
 
-# Você pode armazenar sua consulta em outro objeto
+# Voc? pode armazenar sua consulta em outro objeto
 baseAsia <- basePaises%>%
   filter(continent == "Asia")
 
@@ -164,18 +164,18 @@ basePaises %>%
 
 # lendo a base munic a partir do meu repositorio do Github
 munic <- read.csv("https://raw.githubusercontent.com/danielppagotto/R_empreendedorismo1/main/arquivos%20de%20bases/politicas_empreendedorismo.csv",
-                  sep = ";", encoding = "UTF-8") %>% rename(cod_cidade = X.U.FEFF.CodMun)
+                  sep = ";", encoding = "UTF-8") 
 
 ice <- read.csv("https://raw.githubusercontent.com/danielppagotto/R_empreendedorismo1/main/arquivos%20de%20bases/base_ice.csv",
                 sep = ";", encoding = "UTF-8")
 
 inner <- munic %>% 
-  inner_join(ice, by = c("cod_cidade"="cod_ibge"))
+  inner_join(ice, by = c("CodMun"="cod_ibge"))
 
 left <- munic %>% 
-  left_join(ice, by = c("cod_cidade"="cod_ibge"))
+  left_join(ice, by = c("CodMun"="cod_ibge"))
 
-# Visualização de dados ---------------------------------------------------
+# Visualiza??o de dados ---------------------------------------------------
 
 # base usada
 base <- gapminder %>% 
@@ -183,7 +183,7 @@ base <- gapminder %>%
 
 glimpse(base)
 
-# Análise descritiva 
+# An?lise descritiva 
 skimr::skim(base)
 
 # Histograma - Rbase 
@@ -243,7 +243,7 @@ base %>%
 
 ggplot(base,aes(x=lifeExp)) + geom_density(fill="darkblue") +
   labs(title = "Histograma da expectativa de vida", 
-       x = "Expectativa de vida", y = "Frequência") + theme_minimal()
+       x = "Expectativa de vida", y = "Frequ?ncia") + theme_minimal()
 
 ggplot(base,aes(x=log(gdpPercap),y=lifeExp)) + geom_point() +
   labs(x = "PIB per capita (log)", y = "Expectativa de vida") + theme_bw()
@@ -291,4 +291,3 @@ grafico <- ggplot(base,aes(y=lifeExp, x=log(gdpPercap), col=continent)) + geom_p
        y = "Expectativa de vida") + theme_bw()
 
 ggplotly(grafico)
-
