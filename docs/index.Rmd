@@ -1,6 +1,6 @@
 ---
-title: "R aplicado a empreedendorismo"
-subtitle: "Usando o R para explorar bases de empreendedorismo"
+title: "Introdução ao R aplicado a pesquisas em empreendedorismo"
+subtitle: "Conceitos básicos de R"
 author: "Daniel Pagotto"
 contact: "danielppagotto@gmail.com"
 institute: "LAPEI/UFG e CIGETS/UFG"
