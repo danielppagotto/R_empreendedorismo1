@@ -29,7 +29,7 @@ knitr::include_graphics("imagem/realizacao.png")
 - Já desenvolveu projetos em áreas, como: empreendedorismo, gestão/políticas públicas, inovação na saúde
 - Há aproximadamente dois anos tem utilizado R rotineiramente em suas atividades de trabalho e  ministrado cursos para a comunidade de R 
 
-```{r gatas, figures-side, fig.show="hold", echo=FALSE, out.height="70%", out.width="80%", fig.align='center', fig.height=3, fig.cap=" "}
+```{r trabalho, figures-side, fig.show="hold", echo=FALSE, out.height="70%", out.width="80%", fig.align='center'}
 
 knitr::include_graphics("imagem/trabalho.png")
 
@@ -62,12 +62,19 @@ class: inverse, middle, left
 - Aplicar funções para visualização de dados
 
 ---
-# Por que usar o R?
+# Informes iniciais 
 
-```{r why_r, echo=FALSE, out.height="80%", out.width="80%",fig.align='center'}
-knitr::include_graphics("https://media.giphy.com/media/WMODmi5AX9ZEQ/giphy.gif")
+<br> 
+- Você pode acessar o site do LAPEI para baixar os materiais de suporte e acompanhar ao longo da aula. Para cada módulo, teremos o arquivo de script .R e o caderno de scripts para você consultar quando precisar 
 
-```
+- Teremos um intervalo de 10 minutos na metade do encontro
+
+- O curso não vai adentrar discussões de estatística inferencial. Aprofundar em técnicas dessa abordagem demandaria mais tempo de curso
+
+- O certificado do curso será emitido mediante a entrega de atividade final para aquelas pessoas que se inscreveram
+
+- Ao final da aula, o instrutor permanecerá mais 30 minutos em sala do Google Meet a disposição de quem tiver dúvidas ou quiser tratar de algum ponto específico. Ademais, pode interagir em momentos fora dos encontros por meio do canal do [telegram](https://t.me/joinchat/zQ2cwP06xdA1OWQx) 
+
 ---
 
 # O R me dá medo 
@@ -87,6 +94,13 @@ knitr::include_graphics("imagem/r_spss.png")
 
 
 "Toda vez que tento usar R é erro para cá, erro para lá..." 
+---
+# Por que usar o R?
+
+```{r why_r, echo=FALSE, out.height="80%", out.width="80%",fig.align='center'}
+knitr::include_graphics("https://media.giphy.com/media/WMODmi5AX9ZEQ/giphy.gif")
+
+```
 
 ---
 # R e ciência de dados
@@ -436,7 +450,7 @@ Fonte: [Pesquisa de Informações Básicas Municipais](https://www.ibge.gov.br/e
 
 
 ```{r munic2}
-munic <- read.csv("https://raw.githubusercontent.com/danielppagotto/R_empreendedorismo1/main/arquivos%20de%20bases/politicas_empreendedorismo.csv",sep = ";", encoding = "UTF-8") %>% rename(cod_cidade = X.U.FEFF.CodMun)
+munic <- read.csv("https://raw.githubusercontent.com/danielppagotto/R_empreendedorismo1/main/arquivos%20de%20bases/politicas_empreendedorismo.csv",sep = ";", encoding = "UTF-8") 
 ```
 
 ---
@@ -459,10 +473,10 @@ knitr::include_graphics("imagem/left_join.png")
 
 ```{r joins}
 inner <- munic %>% 
-  inner_join(ice, by = c("cod_cidade"="cod_ibge"))
+  inner_join(ice, by = c("CodMun"="cod_ibge"))
 
 left <- munic %>% 
-  left_join(ice, by = c("cod_cidade"="cod_ibge"))
+  left_join(ice, by = c("CodMun"="cod_ibge"))
 ```
 
 Faça o exercício de inspecionar cada um desses bases para verificar o resultado. 

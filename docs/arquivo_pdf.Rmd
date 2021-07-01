@@ -312,9 +312,9 @@ Fonte: [MUNIC](https://www.ibge.gov.br/estatisticas/sociais/saude/10586-pesquisa
 ## Baixando as bases direto do meu github
   
 ```{r munic}
-munic <- read.csv("https://raw.githubusercontent.com/danielppagotto/R_empreendedorismo1/main/arquivos%20de%20bases/politicas_empreendedorismo.csv",sep = ";", encoding = "UTF-8") %>% rename(cod_cidade = "X.U.FEFF.CodMun")
+munic <- read.csv("https://raw.githubusercontent.com/danielppagotto/R_empreendedorismo1/main/arquivos%20de%20bases/politicas_empreendedorismo.csv",sep = ";", encoding = "UTF-8") 
 
-ice <- read.csv("https://raw.githubusercontent.com/danielppagotto/R_empreendedorismo1/main/arquivos%20de%20bases/base_ice.csv",sep = ";", encoding = "UTF-8") %>% rename(cidade = "X.U.FEFF.cidade")
+ice <- read.csv("https://raw.githubusercontent.com/danielppagotto/R_empreendedorismo1/main/arquivos%20de%20bases/base_ice.csv",sep = ";", encoding = "UTF-8") 
 ```
 
 ## Inspecionando as bases
@@ -347,7 +347,7 @@ knitr::include_graphics("imagem/inner_join.png")
 
 ```{r}
 inner <- munic %>% 
-  inner_join(ice, by = c("cod_cidade"="cod_ibge"))
+  inner_join(ice, by = c("CodMun"="cod_ibge"))
 ```
 
 ## left_join
@@ -359,7 +359,7 @@ knitr::include_graphics("imagem/left_join.png")
 
 ```{r}
 left <- munic %>% 
-  left_join(ice, by = c("cod_cidade"="cod_ibge"))
+  left_join(ice, by = c("CodMun"="cod_ibge"))
 ```
 
 # Introduzindo funções para visualização de dados

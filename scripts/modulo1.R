@@ -3,12 +3,12 @@
 # Mod. 1 - Conceitos basicos 
 # Desenvolvido por Daniel do Prado Pagotto (LAPEI-UFG)
 
-# Os "#" representam um coment?rio. O R pula as linhas que tiverem esse #
+# Os "#" representam um comentario. O R pula as linhas que tiverem esse #
 # Para rodar cada linha, coloque o cursor sobre a linha do comando e 
-# aperte ctrl + Enter (ou cmd + Enter, para o usu?rios de Mac)
+# aperte ctrl + Enter (ou cmd + Enter, para o usuarios de Mac)
 
-# Os pacotes abaixo serao usados ao longo da nossa aula. Caso n?o tenha eles 
-# instalados no seu R, ? necess?rio instalar usando os comandos abaixo: 
+# Os pacotes abaixo serao usados ao longo da nossa aula. Caso nao tenha eles 
+# instalados no seu R, e necessario instalar usando os comandos abaixo: 
 # 1) retire os # da frente de cada linha; 2) rode cada comando (ctrl + Enter)
 
 # install.packages("dplyr")
@@ -27,7 +27,7 @@ library(gapminder)
 
 # Parte 1 - Operacoes, atribuicoes e objetos ------------------------------
 
-# Opera??es b?sicas
+# Operacoes basicas
 
 5 + 5
 10 - 6
@@ -37,7 +37,7 @@ library(gapminder)
 sqrt(16)
 5*(50-45)
 
-#Atribui??es
+#Atribuicoes
 
 x <- 5 + 5
 y <- 10 - 16
@@ -72,29 +72,29 @@ rownames(Matriz) <- c("Alice","Gilmar","Cecilia","Bianca","Valentina","Augusto")
 Matriz
 
 
-# Manipula??o de dados  ---------------------------------------------------
+# Manipulacao de dados  ---------------------------------------------------
 
 basePaises <- gapminder
 
 # inspecionando a estrutura da base
 str(basePaises)
 
-# inspecionando as 6 primeiras observa??es 
+# inspecionando as 6 primeiras observacoes 
 head(basePaises)
 
-# inspecionando as 10 ?ltimas observa??es
+# inspecionando as 10 ultimas observacoes
 tail(basePaises, n = 10)
 
-# estat?sticas descritivas da base
+# estatisticas descritivas da base
 summary(basePaises)
 
-# Acessando uma vari?vel da base
+# Acessando uma variavel da base
 basePaises$continent
 
-# Acessando elementos ?nicos
+# Acessando elementos unicos
 unique(basePaises$year)
 
-# M?dia de um vetor
+# Media de um vetor
 mean(basePaises$lifeExp)
 
 
@@ -114,7 +114,7 @@ basePaises%>%
 basePaises%>%
   filter(continent != "Oceania")
 
-# Voc? pode armazenar sua consulta em outro objeto
+# Voce pode armazenar sua consulta em outro objeto
 baseAsia <- basePaises%>%
   filter(continent == "Asia")
 
@@ -175,7 +175,7 @@ inner <- munic %>%
 left <- munic %>% 
   left_join(ice, by = c("CodMun"="cod_ibge"))
 
-# Visualiza??o de dados ---------------------------------------------------
+# Visualizacao de dados ---------------------------------------------------
 
 # base usada
 base <- gapminder %>% 
@@ -183,7 +183,7 @@ base <- gapminder %>%
 
 glimpse(base)
 
-# An?lise descritiva 
+# Analise descritiva 
 skimr::skim(base)
 
 # Histograma - Rbase 
@@ -243,7 +243,7 @@ base %>%
 
 ggplot(base,aes(x=lifeExp)) + geom_density(fill="darkblue") +
   labs(title = "Histograma da expectativa de vida", 
-       x = "Expectativa de vida", y = "Frequ?ncia") + theme_minimal()
+       x = "Expectativa de vida", y = "Frequencia") + theme_minimal()
 
 ggplot(base,aes(x=log(gdpPercap),y=lifeExp)) + geom_point() +
   labs(x = "PIB per capita (log)", y = "Expectativa de vida") + theme_bw()
