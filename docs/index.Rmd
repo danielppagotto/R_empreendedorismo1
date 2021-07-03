@@ -222,7 +222,7 @@ imc
 ---
 
 # Matrizes 
-As **matrizes** possui uma estrutura tabular, com linhas e colunas. Porém, semelhante ao vetor, todos os objetos devem ser de um mesmo tipo (ex.: tudo número, tudo caracter). 
+As **matrizes** possuem uma estrutura tabular, com linhas e colunas. Porém, semelhante ao vetor, todos os objetos devem ser de um mesmo tipo (ex.: tudo número, tudo caracter). 
 
 ```{r matriz}
 Matriz<-cbind(pesos,alturas,imc)
@@ -233,7 +233,7 @@ Matriz
 # Matrizes
 Veja que tem uma carinha de tabela. Mas daqui para frente vamos trabalhar com outra estrutura chamada **dataframe**. Essa estrutura tem formato tabular e ainda permite que os objetos tenham tipos diferentes, ou seja, posso ter uma coluna numérica, outra no formato data, outra no formato de caracteres e assim por diante. 
 
-Existe um tipo de estrutura de dados chamado **lista** muito importante também. Mas entrar nele é assunto para um curso de R intermediário.  
+Existe um tipo de estrutura de dados chamada **lista** muito importante também. Mas entrar nele é assunto para um curso de R intermediário.  
 
 ```{r matriz2}
 rownames(Matriz) <- c("Alice","Gilmar","Cecilia","Bianca","Valentina","Augusto")
@@ -528,7 +528,7 @@ skimr::skim(base)
 ---
 # Curiosidade! ;)
 
-**FYI:** Gapminder é uma organização sem fins lucrativos que promove o desenvolvimento e atingimento dos ODS ao difundir a compreensão de informações de ordem social, econômica, ambiental a nível local, nacional e global. 
+**FYI:** Gapminder é uma organização sem fins lucrativos que promove o desenvolvimento e atingimento dos ODS ao difundir a compreensão de informações de ordem social, econômica, ambiental em âmbito local, nacional e global. 
 
 ```{r ods, echo=FALSE, fig.align='center'}
 knitr::include_graphics("imagem/ODS.png")
@@ -692,8 +692,8 @@ base %>%
 ```
 ---
 
-# Massa, Daniel! 
-Você falou que podíamos customizar muita coisa. E aí? Calma, jovem, veja só...  
+# Muito interessante! 
+Mas você falou que podemos customizar muita coisa... Exato! Ao longo do curso veremos muitas possibilidades. Veja um exemplo a seguir.
 
 ```{r densidade customizada, echo=TRUE, fig.align='center', fig.height=5.5, fig.width=5.5, message=FALSE, warning=FALSE}
 
@@ -770,9 +770,9 @@ DT::datatable(base, options = list(pageLength = 5), class = 'cell-border stripe'
 
 1) Crie um boxplot para a variável expectativa de vida
 
-2) Crie um boxplot para a variável expectativa de vida e cada  continentes em um mesmo painel
+2) Crie um boxplot para a variável expectativa de vida e cada continente em um mesmo painel
 
-3) Faça o mesmo que a questão 2, mas dessa vez use facet
+3) Repita o procedimento solicitado na questão 2, mas dessa vez use facet
 
 4) Insira título nos gráficos, mude o nome dos eixos e coloque outro tema
 
